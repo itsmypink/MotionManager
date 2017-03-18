@@ -1,11 +1,15 @@
-#include <QtCore/QCoreApplication>
+#include "MotionManagergui.h"
+#include <QtWidgets/QApplication>
 
-#include"Driveryk6000.h"
+
 
 int main(int argc, char *argv[])
 {
-	QCoreApplication a(argc, argv);
+    QApplication a(argc, argv);
+    MotionManagergui w;
+    w.show();
 
 
-	return a.exec();
+
+    return a.exec();
 }
