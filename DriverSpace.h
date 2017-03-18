@@ -2,6 +2,7 @@
 #define FRMDRIVERSPACE_H
 
 
+
 #include <Windows.h>
 #include<IMCnet.h>
 #include<ParamDef.h>
@@ -63,7 +64,7 @@ namespace DriverSpace
 		dir:方向
 		speed:运行速度
 		*/
-		void axisMoveVel(MotionAixs axis,int dir,int speed);
+		void axisMoveVel(int axis,int dir,int speed);
 
 
 		/*
@@ -116,6 +117,13 @@ namespace DriverSpace
 		int getAxisLimitStatus(int axis);
 
 
+		/*
+		<获取原点值>
+		参	数：axis轴号
+		返回值：-1无法获取，0无效，1有效
+		*/
+		int getAxisORGstatus(int axis);
+	
 
 	//io...
 		/*
@@ -253,6 +261,13 @@ namespace DriverSpace
 		*/
 		int getAxisLimitStatus(int axis);
 
+
+		/*
+		<获取原点值>
+		参	数：axis轴号
+		返回值：-1无法获取，0无效，1有效
+		*/
+		int getAxisORGstatus(int axis);
 
 //io...
 		/*

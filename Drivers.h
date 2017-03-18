@@ -16,9 +16,8 @@ using namespace std;
 using namespace DriverSpace;
 
 template<class T>
-class DRIVERS:public QObject
+class DRIVERS
 {
-	Q_OBJECT
 
 public:
 
@@ -45,24 +44,25 @@ Axis functional funcs...
 	/*
 	<三轴联动>
 	参	数:Axis1,Axis2,Axis3表示轴号
-		   _1Target~_3Target表示三个轴的逻辑位置，并不是执行机构实际执行距离
+		   _1Target~_3Target表示三个轴的 逻辑位置 或 执行机构实际执行距离
 		   MoveSpeed运行速度
 	返回值：void
-	备	注：重载两个版本，一个自定义速度，一个采用类内变量i_moveSpeed
+	备	注：重载两个版本，一个目标位置值为逻辑位置，一个为执行机构实际位置
 	*/
-	void moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int Axis3, int _3Target, int MoveSpeed);								// 3轴联动 单位step
-	void moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int Axis3, int _3Target);
+	void moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int Axis3, int _3Target, int MoveSpeed=i_moveSpeed);								// 3轴联动 单位step
+	void moveTo(int Axis1, double _1Target, int Axis2, double _2Target, int Axis3, double _3Target, int MoveSpeed = i_moveSpeed);
+
 
 	/*
 	<五轴联动>
 	参	数：Axis1~Axis5表示轴号
-			1Target~_5Target表示轴的逻辑位置，并不是执行机构的实际距离
+			1Target~_5Target表示轴的 逻辑位置 或 执行机构实际执行距离
 			MoveSpeed运行速度
 	返回值：void
-	备	注：重载两个版本，一个自定义速度，一个采用类内变量i_moveSpeed
+	备	注：重载两个版本，一个目标位置值为逻辑位置，一个为执行机构实际位置
 	*/
-	void moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int Axis3, int _3Target, int Axis4, int _4Target, int Axis5, int _5Target, int MoveSpeed);
-	void moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int Axis3, int _3Target, int Axis4, int _4Target, int Axis5, int _5Target);
+	void moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int Axis3, int _3Target, int Axis4, int _4Target, int Axis5, int _5Target, int MoveSpeed=i_moveSpeed);
+	void moveTo(int Axis1, double _1Target, int Axis2, double _2Target, int Axis3, double _3Target, int Axis4, double _4Target, int Axis5, double _5Target, int MoveSpeed = i_moveSpeed);
 
 	/*
 	<单轴绝对运动>
@@ -72,6 +72,7 @@ Axis functional funcs...
 	返回值：void
 	*/
 	void axisMoveAbsolute(int axis, int pos, int speed);
+	void axisMoveAbsolute(int axis, double pos, int speed);
 
 
 	/*
@@ -82,7 +83,7 @@ Axis functional funcs...
 	返回值：void
 	*/
 	void axisMoveRelative(int axis, int steps, int speed);
-
+	void axisMoveRelative(int axis, double steps, int speed);
 
 	/*
 	<单轴持续运动>
@@ -124,6 +125,7 @@ Axis functional funcs...
 	返回值：void
 	*/
 	void jogStart(int axis, int dir,int jogspeed);
+	void jogStart(int axis,int dir);
 
 	/*
 	<点动结束>
@@ -305,6 +307,36 @@ int		i_zeroSpeed;
 	*/
 	int getAxisLimitStatus(QString axisName);
 	int getAxisLimitStatus(int axis);
+
+
+	/*
+	<获取原点值>
+	参	数：axis轴号 或 axisName轴名称
+	返回值：-1无法获取，0无效，1有效
+	备	注：2个重载版本，参数为 axis轴号 或 axisName轴名称
+	*/
+	int getAxisORGstatus(int axis);
+	int getAxisORGstatus(QString axisName);
+
+
+
+	/*
+	<更新轴的位置信息>
+	参	数：无
+	返回值：void
+	备注：更新各个轴的位置信息，通过sigAxisPosUpdate信号发送
+	*/
+	QByteArray getAxisPosUpdate();
+
+	/*
+	<更新轴的限位信息>
+	参	数：无
+	返回值：void
+	备注：更新各个轴的限位信息，通过sigAxisLimUpdate信号发送
+	*/
+	QByteArray getAxisLimUpdate();
+
+
 /*******************************************************************
 
 io operation...
@@ -375,36 +407,20 @@ private:
 
 	QMap<QString, int>		IOInfoMap;
 
-	QTimer	timerAxisPos;
-	QTimer	timerAxisLim;
+	//QTimer	timerAxisPos;
+	//QTimer	timerAxisLim;
 
-signals:
+//signals:
 
 	/*发送轴的位置信息*/
-	void sigAxisPosUpdate(QByteArray);
+	//void sigAxisPosUpdate(QByteArray);
 	
 	/*发送轴的限位信息*/
-	void sigAxisLimUpdate(QByteArray);
+	//void sigAxisLimUpdate(QByteArray);
 
 
-private slots:
 
 
-	/*
-	<更新轴的位置信息>
-	参	数：无
-	返回值：void
-	备注：更新各个轴的位置信息，通过sigAxisPosUpdate信号发送
-	*/
-	void onAxisPosUpdate();
-
-	/*
-	<更新轴的限位信息>
-	参	数：无
-	返回值：void
-	备注：更新各个轴的限位信息，通过sigAxisLimUpdate信号发送
-	*/
-	void onAxisLimUpdate();
 
 
 public slots:
@@ -416,15 +432,13 @@ public slots:
 
 
 template<class T>
-DRIVERS<T>::DRIVERS<T>():
-i_jogspeed(0),
-i_moveSpeed(0),
-i_zeroSpeed(0)
+DRIVERS<T>::DRIVERS():
+i_jogspeed(2000),
+i_moveSpeed(2000),
+i_zeroSpeed(2000)
 {
 
 
-	connect(&timerAxisPos, SIGNAL(timerout()), this, SLOT(onAxisPosUpdate()));
-	connect(&timerAxisLim, SIGNAL(timerout()), this, SLOT(onAxisLimUpdate()));
 }
 
 
@@ -446,11 +460,21 @@ void DRIVERS<T>::moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int Ax
 	device.moveTo(Axis1, _1Target, Axis2, _2Target, Axis3, _3Target, MoveSpeed);
 }
 
-
 template<class T>
-void DRIVERS<T>::moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int Axis3, int _3Target)
+void DRIVERS<T>::moveTo(int Axis1, double _1Target, int Axis2, double _2Target, int Axis3, double _3Target, int MoveSpeed)
 {
-	device..moveTo(Axis1, _1Target, Axis2, _2Target, Axis3, _3Target, i_moveSpeed);
+	QMapIterator<QString, MotionInfo> it(AxisInfoMap);
+	double mpp1 = 0;
+	double mpp2 = 0;
+	double mpp3 = 0;
+	while (it.hasNext())
+	{
+		it.next();
+		if (it.value().Axis == Axis1)mpp1 = it.value().m_xMPP;
+		if (it.value().Axis == Axis2)mpp2 = it.value().m_xMPP;
+		if (it.value().Axis == Axis3)mpp3 = it.value().m_xMPP;
+	}
+	if (mpp1 != 0 && mpp2 != 0 && mpp3 != 0)device.moveTo(Axis1, static_cast<int>(_1Target / mpp1), Axis2, static_cast<int>(_2Target / mpp2), Axis3, static_cast<int>(_3Target / mpp3), MoveSpeed);
 }
 
 
@@ -461,9 +485,24 @@ void DRIVERS<T>::moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int Ax
 }
 
 template<class T>
-void DRIVERS<T>::moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int Axis3, int _3Target, int Axis4, int _4Target, int Axis5, int _5Target)
+void DRIVERS<T>::moveTo(int Axis1, double _1Target, int Axis2, double _2Target, int Axis3, double _3Target, int Axis4, double _4Target, int Axis5, double _5Target, int MoveSpeed)
 {
-	device.moveTo(Axis1, _1Target, Axis2, _2Target, Axis3, _3Target, Axis4, _4Target, Axis5, _5Target, i_moveSpeed);
+	QMapIterator<QString, MotionInfo> it(AxisInfoMap);
+	double mpp1 = 0;
+	double mpp2 = 0;
+	double mpp3 = 0;
+	double mpp4 = 0;
+	double mpp5 = 0;
+	while (it.hasNext())
+	{
+		it.next();
+		if (it.value().Axis == Axis1)mpp1 = it.value().m_xMPP;
+		if (it.value().Axis == Axis2)mpp2 = it.value().m_xMPP;
+		if (it.value().Axis == Axis3)mpp3 = it.value().m_xMPP;
+		if (it.value().Axis == Axis4)mpp4 = it.value().m_xMPP;
+		if (it.value().Axis == Axis5)mpp5 = it.value().m_xMPP;
+	}
+	device.moveTo(Axis1,static_cast<int>(_1Target/mpp1), Axis2,static_cast<int>(_2Target/mpp2), Axis3,static_cast<int>(_3Target/mpp3), Axis4,static_cast<int>(_4Target/mpp4), Axis5,static_cast<int>(_5Target/mpp5), MoveSpeed);
 }
 
 
@@ -474,10 +513,46 @@ void DRIVERS<T>::axisMoveAbsolute(int axis, int pos, int speed)
 }
 
 template<class T>
-void axisMoveRelative(int axis, int steps, int speed)
+void DRIVERS<T>::axisMoveAbsolute(int axis, double pos, int speed)
+{
+	QMapIterator<QString, MotionInfo> it(AxisInfoMap);
+	double mpp=0;
+	while (it.hasNext())
+	{
+		it.next();
+		if (it.value().Axis == axis)
+		{
+			mpp = it.value().m_xMPP;
+			break;
+		}
+	}
+	if (mpp != 0)device.axisMoveAbsolute(axis, static_cast<int>(pos / mpp), speed);
+}
+
+
+template<class T>
+void DRIVERS<T>::axisMoveRelative(int axis, int steps, int speed)
 {
 	device.axisMoveRelative(axis, steps, speed);
 }
+
+template<class T>
+void DRIVERS<T>::axisMoveRelative(int axis, double pos, int speed)
+{
+	QMapIterator<QString, MotionInfo> it(AxisInfoMap);
+	double mpp = 0;
+	while (it.hasNext())
+	{
+		it.next();
+		if (it.value().Axis == axis)
+		{
+			mpp = it.value().m_xMPP;
+			break;
+		}
+	}
+	if (mpp != 0){ qDebug() << "axisMoveRelative mpp:" << mpp; device.axisMoveRelative(axis, static_cast<int>(pos / mpp), speed); }
+}
+
 
 template<class T>
 void DRIVERS<T>::axisMoveVel(int axis, int dir, int speed)
@@ -505,6 +580,13 @@ void DRIVERS<T>::close()
 	device.close();
 }
 
+
+template<class T>
+void DRIVERS<T>::jogStart(int axis, int dir, int jogspeed)
+{
+	device.jogStart(axis, dir, jogspeed);
+}
+
 template<class T>
 void DRIVERS<T>::jogStart(int axis, int dir)
 {
@@ -513,11 +595,11 @@ void DRIVERS<T>::jogStart(int axis, int dir)
 
 
 template<class T>
-void DRIVERS<T>::jogStop(int axis, int dir)
+void DRIVERS<T>::jogStop(int axis)
 {
 	device.jogStop(axis, dir);
 }
-
+/*
 template<class T>
 void DRIVERS<T>::startAxisPosUpdate(int msec)
 {
@@ -542,7 +624,7 @@ void DRIVERS<T>::stopAxisLimUpdate()
 {
 	timerAxisLim.stop();
 }
-
+*/
 /*******************************************************************
 
 AxisInfoMap operations
@@ -560,7 +642,7 @@ void DRIVERS<T>::AxisInfoInsertItem(QString AxisName,int axis,double m_screwPitc
 	info.Axis = axis;
 	info.m_screwPitchX = m_screwPitchX;
 	info.m_xPPR = m_xPPR;
-	info.m_xPPM = m_xppm;
+	info.m_xPPM = m_xPPM;
 	info.m_xMPP = m_xMPP;
 	
 	AxisInfoMap.insert(AxisName, info);
@@ -648,19 +730,17 @@ template<class T>
 double  DRIVERS<T>::getCurPosmm(int axis)
 {
 	double	mpp = 0;
-
 	QMapIterator<QString, MotionInfo> it(AxisInfoMap);
 	while (it.hasNext())
 	{
-		QMap<QString, MotionInfo>temp = it.next();
-		if (temp.value().Axis == axis)
+		it.next();
+		if (it.value().Axis == axis)
 		{
-			mpp = temp.value().m_xMPP;
+			mpp = it.value().m_xMPP;
 			break;
 		}
 	}
 	return device.getCurPos(axis)*mpp;
-	
 }
 
 template<class T>
@@ -683,6 +763,62 @@ int DRIVERS<T>::getAxisLimitStatus(int axis)
 {
 	return device.getAxisLimitStatus(axis);
 }
+
+
+template<class T>
+int DRIVERS<T>::getAxisORGstatus(int axis)
+{
+	return device.getAxisORGstatus(axis);
+}
+
+
+template<class T>
+int DRIVERS<T>::getAxisORGstatus(QString axisName)
+{
+	if (!AxisInfoMap.keys().contains(axisName))return -1;
+	return device.getAxisORGstatus(AxisInfoMap.value(axisName).Axis);
+}
+
+
+template<class T>
+QByteArray DRIVERS<T>::getAxisPosUpdate()
+{
+	if (AxisInfoMap.isEmpty())return QByteArray();
+
+	QJsonObject obj_AxisPos;
+	QMapIterator<QString, MotionInfo>it(AxisInfoMap);
+	while (it.hasNext())
+	{
+		QString tmp = it.next().key();
+		obj_AxisPos.insert(tmp, getCurPosmm(tmp));
+	}
+
+	QJsonDocument doc_AxisPos;
+	doc_AxisPos.setObject(obj_AxisPos);
+
+	return doc_AxisPos.toJson(QJsonDocument::Compact);
+}
+
+
+template<class T>
+QByteArray DRIVERS<T>::getAxisLimUpdate()
+{
+	if (AxisInfoMap.isEmpty())return QByteArray();
+
+	QJsonObject obj_AxisLim;
+	QMapIterator<QString, MotionInfo>it(AxisInfoMap);
+	while (it.hasNext())
+	{
+		QString tmp = it.next().key();
+		obj_AxisLim.insert(tmp, getAxisLimitStatus(tmp));
+	}
+
+	QJsonDocument doc_AxisLim;
+	doc_AxisLim.setObject(obj_AxisLim);
+
+	return doc_AxisLim.toJson(QJsonDocument::Compact);
+}
+
 
 
 
@@ -771,43 +907,5 @@ void DRIVERS<T>::DeleteIoDev(QString devName)
 
 
 
-//private slots...
-
-template<class T>
-void DRIVERS<T>::onAxisPosUpdate()
-{
-	if (AxisInfoMap.isEmpty())return;
-	
-	QJsonObject obj_AxisPos;
-	QMapIterator<QString, MotionInfo>it(AxisInfoMap);
-	while (it.hasNext())
-	{
-		QMap < QString, MotionInfo>tmp = it.next();
-		obj_AxisPos.insert(tmp.key(), getCurPosmm(tmp.key));
-	}
-
-	QJsonDocument doc_AxisPos;
-	doc_AxisPos.setObject(obj_AxisPos);
-
-	emit sigAxisPosUpdate(doc_AxisPos.toJson(QJsonDocument::Compact));
-}
 
 
-template<class T>
-void DRIVERS<T>::onAxisLimUpdate()
-{
-	if (AxisInfoMap.isEmpty())return;
-
-	QJsonObject obj_AxisLim;
-	QMapIterator<QString, MotionInfo>it(AxisInfoMap);
-	while (it.hasNext())
-	{
-		QMap < QString, MotionInfo>tmp = it.next();
-		obj_AxisPos.insert(tmp.key(), getAxisLimitStatus(tmp.key()));
-	}
-
-	QJsonDocument doc_AxisLim;
-	doc_AxisLim.setObject(obj_AxisLim);
-
-	emit sigAxisLimUpdate(doc_AxisLim.toJson(QJsonDocument::Compact));
-}

@@ -27,7 +27,7 @@ int	 DriverIMCnet::init()
 		// clearimcLoc
 		if (IMC_SetParam16(m_imcHandle, clearimcLoc, -1, 0, SEL_IFIFO) != IMC_OK)
 			break;
-		for (int axis = 0; axis < N_AXIS; axis++) {
+		for (int axis = 0; axis < 6; axis++) {
 			// 清除各轴的位置值及状态，配置clear参数必须放在第一
 			if (IMC_SetParam16(m_imcHandle, clearLoc, -1, axis, SEL_IFIFO) != IMC_OK)break;
 
@@ -108,7 +108,7 @@ int	 DriverIMCnet::init()
 		// 映射Z轴
 		if (IMC_SetParam16(m_imcHandle, segmap_z1Loc, Z_AXIS, 0, SEL_IFIFO) != IMC_OK)break;
 		// 设置段的运行速度
-		if (IMC_SetParam32(m_imcHandle, segtgvel1Loc, m_moveSpeed / 1000.0 * 65536, 0, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam32(m_imcHandle, segtgvel1Loc, 5000 / 1000.0 * 65536, 0, SEL_IFIFO) != IMC_OK)break;
 		// 设置段末的速度
 		if (IMC_SetParam32(m_imcHandle, segendvel1Loc, 0, 0, SEL_IFIFO) != IMC_OK)break;
 
@@ -246,6 +246,43 @@ int DriverIMCnet::getCurPos(int axis)
 }
 
 
+int DriverIMCnet::getAxisLimitStatus(int axis)
+{
+	WR_MUL_DES m_limit;
+	m_limit.addr = errorLoc;
+	m_limit.axis = axis;
+	m_limit.len = 1;
+
+	//返回值：-1出错，0，无限位，1正向限位，2负向限位，3正负限位
+	if (IMC_GetMulParam(m_imcHandle, &m_limit, 1) == IMC_OK)
+	{
+		if (m_limit.data[0] & 0x0003 == 0x0003)return 3;
+		else
+		{
+			if (m_limit.data[0] & 0x0001)return 1;
+			else if (m_limit.data[0] & 0x0002) return 2;
+			else return 0;
+		}
+	}
+	return -1;
+}
+
+
+int DriverIMCnet::getAxisORGstatus(int axis)
+{
+	WR_MUL_DES m_aio;
+	m_aio.addr = aioLoc;
+	m_aio.axis = axis;
+	m_aio.len = 1;
+	if (IMC_GetMulParam(m_imcHandle, &m_aio, 1) == IMC_OK)
+	{
+		if ((m_aio.data[0] & 0x4) != 0)return 1;
+		else return 0;
+	}
+	else
+		return -1;
+}
+
 
 //io...
 int DriverIMCnet::writeBit(int bit, int value)
@@ -270,25 +307,3 @@ int DriverIMCnet::readBit(int port_bit)
 
 
 
-//limitstate...
-
-int DriverIMCnet::getAxisLimitStatus(int axis)
-{
-	WR_MUL_DES m_limit;
-	m_limit.addr = errorLoc;
-	m_limit.axis = axis;
-	m_limit.len = 1;
-	
-	//返回值：-1出错，0，无限位，1正向限位，2负向限位，3正负限位
-	if (IMC_GetMulParam(m_imcHandle, &m_limit, 1) == IMC_OK)
-	{
-		if (m_limit.data[0] & 0x0003 == 0x0003)return 3;
-		else
-		{
-			if (m_limit.data[0] & 0x0001)return 1;
-			else if (m_limit.data[0] & 0x0002) return 2;
-			else return 0;
-		}
-	}
-	return -1;
-}
