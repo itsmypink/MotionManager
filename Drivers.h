@@ -6,11 +6,13 @@
 #include<qtimer.h>
 #include<qjsonobject.h>
 #include<qjsondocument.h>
+#include<qdom.h>
+#include<qfile.h>
+#include<qbytearray.h>
 
 #include<iostream>
-
+#include<typeinfo>
 using namespace std;
-
 
 #include"DriverSpace.h"
 using namespace DriverSpace;
@@ -23,7 +25,6 @@ public:
 
 	DRIVERS<T>();
 
-
 /*******************************************************************
 	
 Axis functional funcs...
@@ -34,11 +35,11 @@ Axis functional funcs...
 	/*
 	<控制卡初始化函数>
 	参  数：无
-	返回值：	初始化不成功则返回-1
-			yk6000，成功则返回卡号
-			IMCnet，成功则返回1
+	返回值：	0成功,-1控制卡初始化失败，-2配置文件不正确或打开失败
 	*/
 	int	 init();
+	int  initFromYk6000XML();
+	int  initFromIMCnetXML();
 
 
 	/*
@@ -336,6 +337,12 @@ int		i_zeroSpeed;
 	*/
 	QByteArray getAxisLimUpdate();
 
+	/*
+	<获取io定义信息>
+	参	数：无
+	返回值：io和端口的map
+	*/
+	QMap<QString, int>	getIOinfoMap();
 
 /*******************************************************************
 
@@ -348,9 +355,9 @@ io operation...
 	<io注册>
 	参	数：devName定义端口名称
 			devPort端口号
-	返回值：成功则返回0，否则返回-1
+	返回值：void
 	*/
-	int registerIoDev(QString devName, int devPort);
+	void registerIoDev(QString devName, int devPort);
 
 
 	/*
@@ -401,11 +408,11 @@ private:
 	T device;
 
 	QMap<QString, MotionInfo> AxisInfoMap;
+	QMap<QString, int>		IOInfoMap;
+
 	int		i_jogspeed;
 	int		i_moveSpeed;
 	int		i_zeroSpeed;
-
-	QMap<QString, int>		IOInfoMap;
 
 	//QTimer	timerAxisPos;
 	//QTimer	timerAxisLim;
@@ -450,7 +457,99 @@ Motion functional funcs
 template<class T>
 int	 DRIVERS<T>::init()
 {
-	return device.init();
+	int result;
+	if (QString(typeid(T).name()) == "class DriverSpace::Driveryk6000")result = initFromYk6000XML();
+	else if (typeid(T).name() == "class DriverSpace::DriverIMCnet")result = initFromIMCnetXML();
+	return result;
+}
+
+template<class T>
+int DRIVERS<T>::initFromYk6000XML()
+{
+	//返回值：	0成功, -1控制卡初始化失败， - 2配置文件不正确或打开失败
+	QFile file("./AxisConfig.xml");
+	if (!file.open(QFile::ReadOnly | QFile::Text))return -2;
+
+	QDomDocument doc_XML;
+	QString err;
+	int row = 0, col = 0;
+	if (!doc_XML.setContent(&file, false, &err, &row, &col))return -2;
+	if (doc_XML.isNull())return -2;
+	//0成功 -3配置文件不正确， -2无法打开配置文件
+	QDomElement root = doc_XML.documentElement();
+	if (root.tagName() == "CONFIG")
+	{
+		QDomNodeList _1Nodes = root.childNodes();
+		for (int _1Nodes_Index = 0; _1Nodes_Index < _1Nodes.count(); _1Nodes_Index++)
+		{
+			QDomNode _1Node = _1Nodes.at(_1Nodes_Index);
+			QDomElement _1NodeEle = _1Node.toElement();
+			if (_1NodeEle.tagName() == "AXISCONFIG")
+			{
+				QDomNodeList _2Nodes = _1NodeEle.childNodes();
+				for (int _2Nodes_Index = 0; _2Nodes_Index < _2Nodes.count(); _2Nodes_Index++)
+				{
+					QDomNode _2Node = _2Nodes.at(_2Nodes_Index);
+					QDomElement _2NodeEle = _2Node.toElement();
+					if (_2NodeEle.tagName() == "AXIS")
+					{
+						QString NAME, NUMB, PMODE, PLOGIC, DLOGIC, PPR, SCREW;
+						QDomNodeList _3Nodes = _2NodeEle.childNodes();
+						for (int _3Node_Index = 0; _3Node_Index < _3Nodes.count(); _3Node_Index++)
+						{
+							QDomNode _3Node = _3Nodes.at(_3Node_Index);
+							QDomElement _3NodeEle = _3Node.toElement();
+
+							if (_3NodeEle.tagName() == "NAME")NAME = _3NodeEle.text();
+							if (_3NodeEle.tagName() == "NUMB"){ NUMB = _3NodeEle.text(); }
+							if (_3NodeEle.tagName() == "PMODE")PMODE = _3NodeEle.text();
+							if (_3NodeEle.tagName() == "PLOGIC")PLOGIC = _3NodeEle.text();
+							if (_3NodeEle.tagName() == "DLOGIC")DLOGIC = _3NodeEle.text();
+							if (_3NodeEle.tagName() == "PPR")PPR = _3NodeEle.text();
+							if (_3NodeEle.tagName() == "SCREW")SCREW = _3NodeEle.text();
+						}
+						if (NAME.isEmpty() || NUMB.isEmpty() || PMODE.isEmpty() || PLOGIC.isEmpty() || DLOGIC.isEmpty() || PPR.isEmpty() || SCREW.isEmpty())return -2;
+						AxisInfoInsertItem(NAME, NUMB.toInt(), SCREW.toDouble(), PPR.toDouble());
+						device.init(NUMB.toInt(), PMODE.toInt(), PLOGIC.toInt(), DLOGIC.toInt());
+					}
+				}
+			}
+			else if (_1NodeEle.tagName() == "OUTPUTCONFIG")
+			{
+				QDomNodeList _2Nodes = _1NodeEle.childNodes();
+				for (int _2Nodes_Index = 0; _2Nodes_Index < _2Nodes.count(); _2Nodes_Index++)
+				{
+					QDomNode _2Node = _2Nodes.at(_2Nodes_Index);
+					QDomElement _2NodeEle = _2Node.toElement();
+					if (_2NodeEle.tagName() == "OUTPUT")
+					{
+						QString NAME, PORT;
+						QDomNodeList _3Nodes = _2NodeEle.childNodes();
+						for (int _3Node_Index = 0; _3Node_Index < _3Nodes.count(); _3Node_Index++)
+						{
+							QDomNode _3Node = _3Nodes.at(_3Node_Index);
+							QDomElement _3NodeEle = _3Node.toElement();
+
+							if (_3NodeEle.tagName() == "NAME")NAME = _3NodeEle.text();
+							if (_3NodeEle.tagName() == "PORT")PORT = _3NodeEle.text();
+						}
+						if (NAME.isEmpty() || PORT.isEmpty())return -2;
+						registerIoDev(NAME, PORT.toInt());
+					}
+				}
+			}
+		}
+	}
+	else
+		return -2;
+	return 0;
+}
+
+
+template<class T>
+int DRIVERS<T>::initFromIMCnetXML()
+{
+	return 0;
 }
 
 
@@ -819,7 +918,11 @@ QByteArray DRIVERS<T>::getAxisLimUpdate()
 	return doc_AxisLim.toJson(QJsonDocument::Compact);
 }
 
-
+template<class T>
+QMap<QString, int>	DRIVERS<T>::getIOinfoMap()
+{
+	return IOInfoMap;
+}
 
 
 /*******************************************************************
@@ -829,7 +932,7 @@ io operations...
 ********************************************************************/
 
 template<class T>
-int DRIVERS<T>::registerIoDev(QString devName, int devPort)
+void DRIVERS<T>::registerIoDev(QString devName, int devPort)
 {
 	IOInfoMap.insert(devName, devPort);
 }

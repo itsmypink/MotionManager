@@ -1,13 +1,20 @@
 #ifndef FRMDRIVERSPACE_H
 #define FRMDRIVERSPACE_H
 
-
+#include<qdom.h>
+#include<qfile.h>
+#include<qbytearray.h>
+#include<qjsonobject.h>
+#include<qjsonarray.h>
+#include<qjsondocument.h>
+#include<qdebug.h>
 
 #include <Windows.h>
 #include<IMCnet.h>
 #include<ParamDef.h>
 #include<IMC_Def.h>
 #include<PackageFun.h>
+
 
 namespace DriverSpace
 {
@@ -25,11 +32,11 @@ namespace DriverSpace
 		Driveryk6000();
 		
 		/*
-		控制卡初始化函数
-		返回值：控制卡号
+		<控制卡初始化>
+		返回值：0成功 -1无法打开配置文件 -2控制卡open失败 
 		内部：获取控制卡号，设置脉冲输出方式
 		*/
-		int	 init();
+		int	 init(int axis,int mode,int logic,int dir_logic);
 
 		
 		/*
@@ -145,6 +152,7 @@ namespace DriverSpace
 
 	private:
 		int				m_cardID;
+	
 	};
 
 /*************************************************************************

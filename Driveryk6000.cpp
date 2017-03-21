@@ -15,17 +15,15 @@ m_cardID(-1)
 }
 
 //functional funcs...
-int Driveryk6000::init()
+int Driveryk6000::init(int axis, int mode, int logic, int dir_logic)
 {
+	qDebug() << "Driveryk6000::init: NUMB, PMODE, PLOGIC, DLOGIC:" << axis << " " << mode << " " << logic << " " << dir_logic;
+
 	if (m_cardID<0)m_cardID = yk6000_Open();
-	if (m_cardID > 0) 
-	{
-		yk6000_Set_Pulse_Mode(m_cardID, X_AXIS, 1, 0, 0);
-		yk6000_Set_Pulse_Mode(m_cardID, Y_AXIS, 1, 0, 1);
-		yk6000_Set_Pulse_Mode(m_cardID, Z_AXIS, 1, 0, 0);
-	}
-	
-	return m_cardID;
+	if (m_cardID <= 0)return -1;
+	else 
+		yk6000_Set_Pulse_Mode(m_cardID,axis,mode,logic,dir_logic);
+	return 0;
 }
 
 void Driveryk6000::moveTo(int Axis1, int xTarget, int Axis2, int yTarget, int Axis3, int zTarget, int MoveSpeed)			// 3轴联动 单位step
