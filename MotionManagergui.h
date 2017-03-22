@@ -28,7 +28,7 @@ private:
 	QTimer timerAxisPosUpdate;
 	QTimer timerAxisLimUpdate;
 
-	DRIVERS<DriverSpace::Driveryk6000> Device;
+	DRIVERS<DriverSpace::DriverIMCnet> Device;
 
 
 	void initButtons();
@@ -38,7 +38,7 @@ private:
 	QMap<QString, MotionInfo> AxisInfoMap;
 
 	void setIOinfoToBtns();
-	QMap<QString, int>		IOInfoMap;
+	QMap<QString, IOInfo>		IOInfoMap;
 
 signals:
 

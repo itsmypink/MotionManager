@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--YK6000控制卡配置-->
+<CONFIG>
+	<AXISCONFIG>
+		<AXIS>
+			<NAME>X</NAME>		<!--轴名称-->
+			<NUMB>1</NUMB>		<!--轴编号-->
+			<PMODE>1</PMODE>	<!--输出脉冲工作方式 0脉冲+脉冲方式   1脉冲+方向方式-->
+			<PLOGIC>0</PLOGIC>	<!--脉冲逻辑 0正逻辑脉冲 1负逻辑脉冲-->
+			<DLOGIC>0</DLOGIC>	<!--方向输出信号  0方向输出信号正逻辑  1方向输出信号负逻辑-->
+			<PPR>10000</PPR>	<!--每转脉冲数-->
+			<SCREW>10</SCREW>	<!--丝杆导程-->
+		</AXIS>
+		<AXIS>
+			<NAME>Y</NAME>		<!--轴名称-->
+			<NUMB>2</NUMB>		<!--轴编号-->
+			<PMODE>1</PMODE>	<!--输出脉冲工作方式 0脉冲+脉冲方式   1脉冲+方向方式-->
+			<PLOGIC>0</PLOGIC>	<!--脉冲逻辑 0正逻辑脉冲 1负逻辑脉冲-->
+			<DLOGIC>1</DLOGIC>	<!--方向输出信号  0方向输出信号正逻辑  1方向输出信号负逻辑-->
+			<PPR>10000</PPR>	<!--每转脉冲数-->
+			<SCREW>10</SCREW>	<!--丝杆导程-->
+		</AXIS>
+		<AXIS>
+			<NAME>Z</NAME>		<!--轴名称-->
+			<NUMB>3</NUMB>		<!--轴编号-->
+			<PMODE>1</PMODE>	<!--输出脉冲工作方式 0脉冲+脉冲方式   1脉冲+方向方式-->
+			<PLOGIC>0</PLOGIC>	<!--脉冲逻辑 0正逻辑脉冲 1负逻辑脉冲-->
+			<DLOGIC>0</DLOGIC>	<!--方向输出信号  0方向输出信号正逻辑  1方向输出信号负逻辑-->
+			<PPR>10000</PPR>	<!--每转脉冲数-->
+			<SCREW>10</SCREW>	<!--丝杆导程-->
+		</AXIS>
+	</AXISCONFIG>
+</CONFIG>

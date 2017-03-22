@@ -10,35 +10,36 @@ MotionManagergui::MotionManagergui(QWidget *parent)
 	ui.setupUi(this);
 
 	initButtons();
-	Device.init();
+	Device.initIOFromXML("./IOConfig.xml");
+	int r=Device.init();
 	IOInfoMap = Device.getIOinfoMap();
 	setIOinfoToBtns();
 
 	connect(&timerAxisPosUpdate, SIGNAL(timeout()), this, SLOT(onAxisPosUpdate()));
 	connect(&timerAxisLimUpdate, SIGNAL(timeout()), this, SLOT(onAxisLimUpdate()));
 
-	connect(ui.pb_XRelativeGo, &QPushButton::clicked, [&](){qDebug() << "ui.le_XRelativeValue:" << ui.le_XRelativeValue->text().toDouble();Device.axisMoveRelative(1, ui.le_XRelativeValue->text().toDouble(), 2000); });
-	connect(ui.pb_YRelativeGo, &QPushButton::clicked, [&](){Device.axisMoveRelative(2, ui.le_YRelativeValue->text().toDouble(), 2000); });
-	connect(ui.pb_ZRelativeGo, &QPushButton::clicked, [&](){Device.axisMoveRelative(3, ui.le_ZRelativeValue->text().toDouble(), 2000); });
+	connect(ui.pb_XRelativeGo, &QPushButton::clicked, [&](){qDebug() << "ui.le_XRelativeValue:" << ui.le_XRelativeValue->text().toDouble();Device.axisMoveRelative(0, ui.le_XRelativeValue->text().toDouble(), 2000); });
+	connect(ui.pb_YRelativeGo, &QPushButton::clicked, [&](){Device.axisMoveRelative(1, ui.le_YRelativeValue->text().toDouble(), 2000); });
+	connect(ui.pb_ZRelativeGo, &QPushButton::clicked, [&](){Device.axisMoveRelative(2, ui.le_ZRelativeValue->text().toDouble(), 2000); });
 
 	connect(ui.pb_AxisStop1, &QPushButton::clicked, [&](){Device.stop(); });
 	connect(ui.pb_AxisStop2, &QPushButton::clicked, [&](){Device.stop(); });
 	connect(ui.pb_AxisStop3, &QPushButton::clicked, [&](){Device.stop(); });
 
-	connect(ui.pb_XAbsoluteGo, &QPushButton::clicked, [&](){Device.axisMoveAbsolute(1, ui.le_XAbsolute->text().toDouble(), 2000); });
-	connect(ui.pb_YAbsoluteGo, &QPushButton::clicked, [&](){Device.axisMoveAbsolute(2, ui.le_YAbsolute->text().toDouble(), 2000); });
-	connect(ui.pb_ZAbsoluteGo, &QPushButton::clicked, [&](){Device.axisMoveAbsolute(3, ui.le_ZAbsolute->text().toDouble(), 2000); });
+	connect(ui.pb_XAbsoluteGo, &QPushButton::clicked, [&](){Device.axisMoveAbsolute(0, ui.le_XAbsolute->text().toDouble(), 2000); });
+	connect(ui.pb_YAbsoluteGo, &QPushButton::clicked, [&](){Device.axisMoveAbsolute(1, ui.le_YAbsolute->text().toDouble(), 2000); });
+	connect(ui.pb_ZAbsoluteGo, &QPushButton::clicked, [&](){Device.axisMoveAbsolute(2, ui.le_ZAbsolute->text().toDouble(), 2000); });
 
 	connect(ui.pb_AxisStopAbso1, &QPushButton::clicked, [&](){Device.stop(); });
 	connect(ui.pb_AxisStopAbso2, &QPushButton::clicked, [&](){Device.stop(); });
 	connect(ui.pb_AxisStopAbso3, &QPushButton::clicked, [&](){Device.stop(); });
 
-	connect(ui.pb_3AxisGo, &QPushButton::clicked, [&](){Device.moveTo(1, ui.le_3AxisXpos->text().toDouble(), 2, ui.le_3AxisYpos->text().toDouble(), 3, ui.le_3AxisZpos->text().toDouble(),2000); });
+	connect(ui.pb_3AxisGo, &QPushButton::clicked, [&](){Device.moveTo(0, ui.le_3AxisXpos->text().toDouble(), 1, ui.le_3AxisYpos->text().toDouble(), 2, ui.le_3AxisZpos->text().toDouble(),2000); });
 	connect(ui.pb_3AxisStop, &QPushButton::clicked, [&](){Device.stop(); });
 
 	connect(&pg_Outputs, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(onOutputClicked(QAbstractButton*)));
 
-	startPosAndLimUpdate(100);
+	if(r==0)startPosAndLimUpdate(100);
 }
 
 MotionManagergui::~MotionManagergui()
@@ -100,7 +101,7 @@ void MotionManagergui::startPosAndLimUpdate(int msec)
 
 void MotionManagergui::setIOinfoToBtns()
 {
-	QMapIterator<QString,int> it(IOInfoMap);
+	QMapIterator<QString,IOInfo> it(IOInfoMap);
 	int index = 0;
 	while (it.hasNext())
 	{
@@ -157,7 +158,7 @@ void MotionManagergui::onMoveRelative()
 void MotionManagergui::onOutputClicked(QAbstractButton*b)
 {
 	bool isChecked = b->isChecked();
-	if (IOInfoMap.keys().contains(b->text())){Device.portWrite(IOInfoMap.value(b->text()), isChecked); }
+	if (IOInfoMap.keys().contains(b->text())){ Device.portWrite(b->text()); }
 }
 
 void MotionManagergui::keyPressEvent(QKeyEvent *event)

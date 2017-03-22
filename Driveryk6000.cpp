@@ -17,12 +17,10 @@ m_cardID(-1)
 //functional funcs...
 int Driveryk6000::init(int axis, int mode, int logic, int dir_logic)
 {
-	qDebug() << "Driveryk6000::init: NUMB, PMODE, PLOGIC, DLOGIC:" << axis << " " << mode << " " << logic << " " << dir_logic;
-
 	if (m_cardID<0)m_cardID = yk6000_Open();
 	if (m_cardID <= 0)return -1;
 	else 
-		yk6000_Set_Pulse_Mode(m_cardID,axis,mode,logic,dir_logic);
+		yk6000_Set_Pulse_Mode(m_cardID,axis,mode,logic,dir_logic); 
 	return 0;
 }
 

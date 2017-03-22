@@ -171,9 +171,10 @@ namespace DriverSpace
 
 		/*
 		初始化函数
+		参	数：轴号axis
 		返回值：初始化状态 -1为不成功 1为成功
 		*/
-		int	 init();
+		int	 init(int axis);
 
 
 		/*
@@ -301,7 +302,7 @@ namespace DriverSpace
 	private:
 
 		IMC_HANDLE m_imcHandle;
-
+		int		   num;
 
 	};
 
@@ -326,6 +327,11 @@ namespace DriverSpace
 		double m_xMPP;				// 每个脉冲多少mm
 	};
 
+	struct IOInfo
+	{
+		int PORT;					//端口号
+		int VALUE;					//端口值
+	};
 
 	enum MotionAixs
 	{

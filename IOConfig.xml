@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--YK6000控制卡配置-->
+<CONFIG>
+	<OUTPUTCONFIG>
+		<OUTPUT>
+			<NAME>点胶开</NAME>
+			<PORT>11</PORT>
+			<VALUE>0</VALUE>
+		</OUTPUT>
+		<OUTPUT>
+			<NAME>点胶关</NAME>
+			<PORT>11</PORT>
+			<VALUE>1</VALUE>
+		</OUTPUT>	
+		<OUTPUT>
+			<NAME>卡盘抓</NAME>
+			<PORT>2</PORT>
+			<VALUE>0</VALUE>
+		</OUTPUT>
+		<OUTPUT>
+			<NAME>卡盘放</NAME>
+			<PORT>2</PORT>
+			<VALUE>1</VALUE>
+		</OUTPUT>
+		<OUTPUT>
+			<NAME>抓手抓</NAME>
+			<PORT>5</PORT>
+			<VALUE>1</VALUE>
+		</OUTPUT>
+		<OUTPUT>
+			<NAME>抓手放</NAME>
+			<PORT>5</PORT>
+			<VALUE>0</VALUE>
+		</OUTPUT>
+		<OUTPUT>
+			<NAME>吸嘴吸</NAME>
+			<PORT>6</PORT>
+			<VALUE>0</VALUE>
+		</OUTPUT>
+		<OUTPUT>
+			<NAME>吸嘴放</NAME>
+			<PORT>6</PORT>
+			<VALUE>0</VALUE>
+		</OUTPUT>
+	</OUTPUTCONFIG>
+</CONFIG>
