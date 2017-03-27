@@ -4,6 +4,34 @@
 	<AXISCONFIG>
 		<AXIS>
 			<NAME>X</NAME>					<!--轴名称-->
+			<NUMB>0</NUMB>					<!--轴编号-->
+			<PPR>10000</PPR>				<!--每转脉冲数-->
+			<SCREW>10</SCREW>				<!--丝杆导程-->
+			<ACCELIM>20000000</ACCELIM>		<!--最大加速度限制-->
+			<VELLIM>50000000</VELLIM>		<!--最大速度-->
+			<MCSMAXVEL>200000000</MCSMAXVEL><!--点到点运动速度-->
+			<MCSACCEL>100000</MCSACCEL>		<!--主坐标系加速度-->
+			<MCSDECEL>100000</MCSDECEL>		<!--主坐标系减速度-->
+			<SMOOTH>16</SMOOTH>				<!--点到点运动平滑因子-->
+			<EXITFILT>0</EXITFILT>			<!--发生错误时，轴是否退出运行-->
+			<STOPFILT>1</STOPFILT>			<!--发生错误时，轴是否停止运行-->
+			<STEPMOD>6</STEPMOD>			<!--脉冲发生模式-->
+			<STEPTIM>50</STEPTIM>			<!--一般伺服20以上-->
+			<AIOCTRL>1418</AIOCTRL>			<!--轴IO设置-->
+			<SETTLEW>1</SETTLEW>			<!--静止误差补偿阈值-->
+			<FIXVEL>0</FIXVEL>				<!--误差补偿速度-->
+			<POSERRLIM>5000</POSERRLIM>		<!--位置误差阈值-->
+			<ENCPCTRL>14</ENCPCTRL>			<!--主编码器设置寄存器-->
+			<HIGHVEL>800000</HIGHVEL>		<!--高速搜寻原点的速度-->
+			<LOWVEL>10000</LOWVEL>			<!--低速搜寻原点速度-->
+			<HOMEPOS>0</HOMEPOS>			<!--原点位置值-->
+			<ENA>-1</ENA>					<!--使能轴-->
+			<RUN>-1</RUN>					<!--运行该轴-->
+			<PATHABS>-1</PATHABS>			<!-- -->
+			<SEGMAP>371</SEGMAP>			<!--映射：371XLOC 372YLOC 373 ZLOC-->
+		</AXIS>
+		<AXIS>
+			<NAME>Y</NAME>					<!--轴名称-->
 			<NUMB>1</NUMB>					<!--轴编号-->
 			<PPR>10000</PPR>				<!--每转脉冲数-->
 			<SCREW>10</SCREW>				<!--丝杆导程-->
@@ -28,10 +56,13 @@
 			<ENA>-1</ENA>					<!--使能轴-->
 			<RUN>-1</RUN>					<!--运行该轴-->
 			<PATHABS>-1</PATHABS>			<!-- -->
+			<SEGMAP>372</SEGMAP>			<!--映射：371XLOC 372YLOC 373 ZLOC-->
 		</AXIS>
 		<AXIS>
-			<NAME>X</NAME>					<!--轴名称-->
-			<NUMB>1</NUMB>					<!--轴编号-->
+			<NAME>Z</NAME>					<!--轴名称-->
+			<NUMB>2</NUMB>					<!--轴编号-->
+			<PPR>10000</PPR>				<!--每转脉冲数-->
+			<SCREW>10</SCREW>				<!--丝杆导程-->
 			<ACCELIM>20000000</ACCELIM>		<!--最大加速度限制-->
 			<VELLIM>50000000</VELLIM>		<!--最大速度-->
 			<MCSMAXVEL>200000000</MCSMAXVEL><!--点到点运动速度-->
@@ -53,31 +84,7 @@
 			<ENA>-1</ENA>					<!--使能轴-->
 			<RUN>-1</RUN>					<!--运行该轴-->
 			<PATHABS>-1</PATHABS>			<!-- -->
-		</AXIS>
-		<AXIS>
-			<NAME>X</NAME>					<!--轴名称-->
-			<NUMB>1</NUMB>					<!--轴编号-->
-			<ACCELIM>20000000</ACCELIM>		<!--最大加速度限制-->
-			<VELLIM>50000000</VELLIM>		<!--最大速度-->
-			<MCSMAXVEL>200000000</MCSMAXVEL><!--点到点运动速度-->
-			<MCSACCEL>100000</MCSACCEL>		<!--主坐标系加速度-->
-			<MCSDECEL>100000</MCSDECEL>		<!--主坐标系减速度-->
-			<SMOOTH>16</SMOOTH>				<!--点到点运动平滑因子-->
-			<EXITFILT>0</EXITFILT>			<!--发生错误时，轴是否退出运行-->
-			<STOPFILT>1</STOPFILT>			<!--发生错误时，轴是否停止运行-->
-			<STEPMOD>6</STEPMOD>			<!--脉冲发生模式-->
-			<STEPTIM>50</STEPTIM>			<!--一般伺服20以上-->
-			<AIOCTRL>1418</AIOCTRL>			<!--轴IO设置-->
-			<SETTLEW>1</SETTLEW>			<!--静止误差补偿阈值-->
-			<FIXVEL>0</FIXVEL>				<!--误差补偿速度-->
-			<POSERRLIM>5000</POSERRLIM>		<!--位置误差阈值-->
-			<ENCPCTRL>15</ENCPCTRL>			<!--主编码器设置寄存器-->
-			<HIGHVEL>800000</HIGHVEL>		<!--高速搜寻原点的速度-->
-			<LOWVEL>10000</LOWVEL>			<!--低速搜寻原点速度-->
-			<HOMEPOS>0</HOMEPOS>			<!--原点位置值-->
-			<ENA>-1</ENA>					<!--使能轴-->
-			<RUN>-1</RUN>					<!--运行该轴-->
-			<PATHABS>-1</PATHABS>			<!-- -->
+			<SEGMAP>373</SEGMAP>			<!--映射：371XLOC 372YLOC 373 ZLOC-->
 		</AXIS>
 	</AXISCONFIG>
 </CONFIG>

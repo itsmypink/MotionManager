@@ -36,7 +36,7 @@ namespace DriverSpace
 		返回值：0成功 -1无法打开配置文件 -2控制卡open失败 
 		内部：获取控制卡号，设置脉冲输出方式
 		*/
-		int	 init(int axis,int mode,int logic,int dir_logic);
+		int	 init(QList<QByteArray>);
 
 		
 		/*
@@ -174,7 +174,7 @@ namespace DriverSpace
 		参	数：轴号axis
 		返回值：初始化状态 -1为不成功 1为成功
 		*/
-		int	 init(int axis);
+		int	 init(QList<QByteArray>);
 
 
 		/*
@@ -294,11 +294,6 @@ namespace DriverSpace
 		*/
 		int readBit(int bit);
 
-
-
-		
-
-
 	private:
 
 		IMC_HANDLE m_imcHandle;
@@ -327,7 +322,7 @@ namespace DriverSpace
 		double m_xMPP;				// 每个脉冲多少mm
 	};
 
-	struct IOInfo
+	struct OutputInfo
 	{
 		int PORT;					//端口号
 		int VALUE;					//端口值
@@ -385,8 +380,6 @@ namespace DriverSpace
 		HIGH_SPEED,
 		ULTRA_SPEED
 	};
-
-
 }
 
 

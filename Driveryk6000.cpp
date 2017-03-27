@@ -15,12 +15,26 @@ m_cardID(-1)
 }
 
 //functional funcs...
-int Driveryk6000::init(int axis, int mode, int logic, int dir_logic)
+int Driveryk6000::init(QList<QByteArray> paras)
 {
 	if (m_cardID<0)m_cardID = yk6000_Open();
 	if (m_cardID <= 0)return -1;
-	else 
-		yk6000_Set_Pulse_Mode(m_cardID,axis,mode,logic,dir_logic); 
+	else
+	{
+		if (paras.isEmpty())return -2;
+		QListIterator<QByteArray> it(paras);
+		while (it.hasNext())
+		{
+			QJsonDocument json_Doc = QJsonDocument::fromJson(it.next());
+			QJsonObject   json_Obj = json_Doc.object();
+			yk6000_Set_Pulse_Mode(m_cardID, json_Obj.value("NUMB").toString().toInt(), json_Obj.value("PMODE").toString().toInt(), json_Obj.value("PLOGIC").toString().toInt(), json_Obj.value("DLOGIC").toString().toInt());
+
+			qDebug() << "NUMB:" << json_Obj.value("NUMB").toString().toInt();
+			qDebug() << "PMODE:" << json_Obj.value("PMODE").toString().toInt();
+			qDebug() << "PLOGIC:" << json_Obj.value("PLOGIC").toString().toInt();
+			qDebug() << "DLOGIC:" << json_Obj.value("DLOGIC").toString().toInt();
+		}
+	}
 	return 0;
 }
 

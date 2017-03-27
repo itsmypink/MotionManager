@@ -11,128 +11,102 @@ num(0)
 
 
 
-int	 DriverIMCnet::init(int axis)
+int	 DriverIMCnet::init(QList<QByteArray> paras)
 {
+	if (paras.isEmpty())return -2;
 
-	int ret = -1;
 	NIC_INFO info;
-	if (num <= 0)
-	{
-		if (IMC_FindNetCard(&info, &num) != IMC_OK)return -1;
-		if (IMC_Open(&m_imcHandle, 0, 0) != IMC_OK)return -1; 
-		if (IMC_SetParam16(m_imcHandle, clearimcLoc, -1, 0, SEL_IFIFO) != IMC_OK)return -1;
-		if (num <= 0 || !m_imcHandle)return -1;
-	}
 
-	do {
+	if (IMC_FindNetCard(&info, &num) != IMC_OK)return -1;
+	if (IMC_Open(&m_imcHandle, 0, 0) != IMC_OK)return -1; 
+	if (IMC_SetParam16(m_imcHandle, clearimcLoc, -1, 0, SEL_IFIFO) != IMC_OK)return -1;
+	if (num <= 0 || !m_imcHandle)return -1;
+
+	int ret = -2;
+	
+	QListIterator<QByteArray> it(paras);
+	while (it.hasNext())
+	{
+		ret = -2;
+		QJsonDocument json_Doc=QJsonDocument::fromJson(it.next());
+		QJsonObject json_Obj = json_Doc.object();
+		int axis = json_Obj.value("NUMB").toString().toInt();
 		
 		// 清除各轴的位置值及状态，配置clear参数必须放在第一
 		if (IMC_SetParam16(m_imcHandle, clearLoc, -1, axis, SEL_IFIFO) != IMC_OK)break;
 
-		qDebug() << "clearLoc";
-
 		// 最大加速度限制，根据需求设置
-		if (IMC_SetParam32(m_imcHandle, accellimLoc, 20000000, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam32(m_imcHandle, accellimLoc, json_Obj.value("ACCELIM").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 		// 最大速度限制，根据需求设置
-		if (IMC_SetParam32(m_imcHandle, vellimLoc, 50000000, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam32(m_imcHandle, vellimLoc, json_Obj.value("VELLIM").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 
 		// 点到点运动的规划速度
-		if (IMC_SetParam32(m_imcHandle, mcsmaxvelLoc, 200000000, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam32(m_imcHandle, mcsmaxvelLoc, json_Obj.value("MCSMAXVEL").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 		// 主坐标系加速度
-		if (IMC_SetParam32(m_imcHandle, mcsaccelLoc, 100000, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam32(m_imcHandle, mcsaccelLoc, json_Obj.value("MCSACCEL").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 		// 主坐标系减速度
-		if (IMC_SetParam32(m_imcHandle, mcsdecelLoc, 100000, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam32(m_imcHandle, mcsdecelLoc, json_Obj.value("MCSDECEL").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 
 		// 点到点运动平滑因子
-		if (IMC_SetParam16(m_imcHandle, smoothLoc, 16, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam16(m_imcHandle, smoothLoc, json_Obj.value("SMOOTH").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 
 		// 发生错误的时候，该轴不退出运行
-		if (IMC_SetParam16(m_imcHandle, exitfiltLoc, 0, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam16(m_imcHandle, exitfiltLoc, json_Obj.value("EXITFILT").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 		// 发生任何错误的时候，该轴停止运行
-		if (IMC_SetParam16(m_imcHandle, stopfiltLoc, -1, axis, SEL_IFIFO) != IMC_OK)break;
-
-		qDebug() << "stopfiltLoc";
+		if (IMC_SetParam16(m_imcHandle, stopfiltLoc, json_Obj.value("STOPFILT").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 
 		// 设置脉冲发生模式 脉冲+方向 脉冲和方向信号的极性为高电平有效
-		if (IMC_SetParam16(m_imcHandle, stepmodLoc, 0x0006, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam16(m_imcHandle, stepmodLoc, json_Obj.value("STEPMOD").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 		// 根据驱动器的脉冲宽度指标来设，一般伺服为20以上，步进为100以上
-		if (IMC_SetParam16(m_imcHandle, steptimeLoc, 50, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam16(m_imcHandle, steptimeLoc, json_Obj.value("STEPTIM").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 
 		// 轴IO设置，使能正负硬限位IO，使能伺服到位和伺服报警IO，禁止软限位；伺服报警高电平有效
-		if (IMC_SetParam16(m_imcHandle, aioctrLoc, 0x058A, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam16(m_imcHandle, aioctrLoc, json_Obj.value("AIOCTRL").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 
 		// 静止窗口，若误差大于此值，iMC将补偿静止误差；若为伺服驱动器，一般应大于0
-		if (IMC_SetParam16(m_imcHandle, settlewinLoc, 1, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam16(m_imcHandle, settlewinLoc, json_Obj.value("SETTLEW").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 
 		// 误差补偿速度，为0禁止补偿，取值范围0~65535；
 		// 由于伺服机构可能出现运动滞后，因此补偿速度过大可能会导致机械振动
-		if (IMC_SetParam16(m_imcHandle, fixvelLoc, 0, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam16(m_imcHandle, fixvelLoc, json_Obj.value("FIXVEL").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 		// 位置误差限制值 超出该值，错误寄存器中对应的位域置1
-		if (IMC_SetParam16(m_imcHandle, poserrlimLoc, 5000, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam16(m_imcHandle, poserrlimLoc, json_Obj.value("POSERRLIM").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 
 		// 主编码器设置寄存器，bit15=0为使用外部反馈部件提供反馈信号，具体参考控制卡说明书
-		if (IMC_SetParam16(m_imcHandle, encpctrLoc, 0x000E, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam16(m_imcHandle, encpctrLoc, json_Obj.value("ENCPCTRL").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 
 		// 高速搜寻原点的速度
-		if (IMC_SetParam32(m_imcHandle, highvelLoc, 800000, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam32(m_imcHandle, highvelLoc, json_Obj.value("HIGHVEL").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 		// 低速搜寻原点的速度
-		if (IMC_SetParam32(m_imcHandle, lowvelLoc, 100000, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam32(m_imcHandle, lowvelLoc, json_Obj.value("LOWVEL").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 
-		if (IMC_SetParam32(m_imcHandle, homeposLoc, 0, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam32(m_imcHandle, homeposLoc, json_Obj.value("HOMEPOS").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 
 		// 使能该轴，无论是否接驱动器使能，ena都必须写入非零值，否则不输出脉冲
-		if (IMC_SetParam16(m_imcHandle, enaLoc, -1, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam16(m_imcHandle, enaLoc, json_Obj.value("ENA").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 		// 运行该轴；只有运行该轴才能进行运动规划；若该轴因错误退出运行，run清零，该轴处于停止运行状态
-		if (IMC_SetParam16(m_imcHandle, runLoc, -1, axis, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam16(m_imcHandle, runLoc, json_Obj.value("RUN").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 
-		qDebug() << "runLoc";
+		if (IMC_SetParam16(m_imcHandle, pathabsLoc, json_Obj.value("PATHABS").toString().toInt(), axis, SEL_IFIFO) != IMC_OK)break;
 
-		if (IMC_SetParam16(m_imcHandle, pathabsLoc, -1, axis, SEL_IFIFO) != IMC_OK)break;
-
-		// A轴为步进电机 无反馈 无伺服到位和伺服报警信号 零点及限位信号高电平有效
-		if (IMC_SetParam16(m_imcHandle, aioctrLoc, 0x0010, A_AXIS, SEL_IFIFO) != IMC_OK)break;
-
-		// A轴采用内部虚拟反馈
-		if (IMC_SetParam16(m_imcHandle, encpctrLoc, 0x800E, A_AXIS, SEL_IFIFO) != IMC_OK)break;
-
-		qDebug() << "segmap_x1Loc1111";
+		if (IMC_SetParam16(m_imcHandle, json_Obj.value("SEGMAP").toString().toInt(), axis, 0, SEL_IFIFO) != IMC_OK);
 
 		// 插补空间1 路径加速度
-		if (IMC_SetParam32(m_imcHandle, pathacc1Loc, 100000, 0, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam32(m_imcHandle, pathacc1Loc, 100000, 0, SEL_IFIFO) != IMC_OK);
 		// 插补空间1 进给倍率1:1
-		if (IMC_SetParam32(m_imcHandle, feedrate1Loc, 65536, 0, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam32(m_imcHandle, feedrate1Loc, 65536, 0, SEL_IFIFO) != IMC_OK);
 		// 启用插补运动空间1
-		if (IMC_SetParam16(m_imcHandle, startpath1Loc, -1, 0, SEL_IFIFO) != IMC_OK)break;
-
+		if (IMC_SetParam16(m_imcHandle, startpath1Loc, -1, 0, SEL_IFIFO) != IMC_OK);
 		// 清空PFIFO1所有指令
-		if (IMC_SetParam16(m_imcHandle, clrPFIFO1Loc, -1, 0, SEL_IFIFO) != IMC_OK)break;
-
-		qDebug() << "segmap_x1Lo222";
-
-		if (axis == 0)
-		{
-			if (IMC_SetParam16(m_imcHandle, segmap_x1Loc, axis, 0, SEL_IFIFO) != IMC_OK){ qDebug() << "segmap_x1Loc"; break; }
-		}
-		else if (axis == 1)
-		{
-			if (IMC_SetParam16(m_imcHandle, segmap_y1Loc, axis, 0, SEL_IFIFO) != IMC_OK){ qDebug() << "segmap_y1Loc"; break; }
-		}
-		else if (axis == 2)
-		{
-			if (IMC_SetParam16(m_imcHandle, segmap_z1Loc, axis, 0, SEL_IFIFO) != IMC_OK){ qDebug() << "segmap_z1Loc"; break; }
-		}
-		
+		if (IMC_SetParam16(m_imcHandle, clrPFIFO1Loc, -1, 0, SEL_IFIFO) != IMC_OK);
 		// 设置段的运行速度
-		if (IMC_SetParam32(m_imcHandle, segtgvel1Loc, 5000 / 1000.0 * 65536, 0, SEL_IFIFO) != IMC_OK)break;
+		if (IMC_SetParam32(m_imcHandle, segtgvel1Loc, 5000 / 1000.0 * 65536, 0, SEL_IFIFO) != IMC_OK);
 		// 设置段末的速度
-		qDebug() << "segmap_x1Lo33";
-		if (IMC_SetParam32(m_imcHandle, segendvel1Loc, 0, 0, SEL_IFIFO) != IMC_OK)break;
-		qDebug() << "segmap_x1Lo44";
-		ret = 1;
-		break;
-		// 清除所有轴的参数
-	} while (false);
+		if (IMC_SetParam32(m_imcHandle, segendvel1Loc, 0, 0, SEL_IFIFO) != IMC_OK);
 
+		ret = 0;
+	}
+	
 	return ret;
 }
 
@@ -164,11 +138,11 @@ void DriverIMCnet::moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int 
 	IMC_SetParam32(m_imcHandle, pathacc1Loc, 300000, 0, SEL_IFIFO);
 
 	IMC_SetParam32(m_imcHandle, feedrate1Loc, 65536, 0, SEL_IFIFO);
-	IMC_SetParam16(m_imcHandle, segmap_x1Loc, X_AXIS, 0, SEL_IFIFO);
-	IMC_SetParam16(m_imcHandle, segmap_y1Loc, Y_AXIS, 0, SEL_IFIFO);
-	IMC_SetParam16(m_imcHandle, segmap_z1Loc, Z_AXIS, 0, SEL_IFIFO);
-	IMC_SetParam16(m_imcHandle, segmap_a1Loc, A_AXIS, 0, SEL_IFIFO);
-	IMC_SetParam16(m_imcHandle, segmap_b1Loc, B_AXIS, 0, SEL_IFIFO); 
+	IMC_SetParam16(m_imcHandle, segmap_x1Loc, Axis1, 0, SEL_IFIFO);
+	IMC_SetParam16(m_imcHandle, segmap_y1Loc, Axis2, 0, SEL_IFIFO);
+	IMC_SetParam16(m_imcHandle, segmap_z1Loc, Axis3, 0, SEL_IFIFO);
+	IMC_SetParam16(m_imcHandle, segmap_a1Loc, Axis4, 0, SEL_IFIFO);
+	IMC_SetParam16(m_imcHandle, segmap_b1Loc, Axis5, 0, SEL_IFIFO);
 	IMC_SetParam32(m_imcHandle, segtgvel1Loc, MoveSpeed / 1000.0 * 65536, 0, SEL_IFIFO);        //设置段的运行速度
 	IMC_SetParam32(m_imcHandle, segendvel1Loc, 0, 0, SEL_IFIFO);
 	IMC_SetParam16(m_imcHandle, startpath1Loc, -1, 0, SEL_IFIFO);
@@ -268,25 +242,19 @@ int DriverIMCnet::getAxisLimitStatus(int axis)
 	m_limit.addr = errorLoc;
 	m_limit.axis = axis;
 	m_limit.len = 1;
-	
-
 	//返回值：-1出错，0，无限位，1正向限位，2负向限位，3正负限位
 	if (IMC_GetMulParam(m_imcHandle, &m_limit, 1) == IMC_OK)
 	{
-		qDebug() << "m_limit.data[0]" << m_limit.data[0];
-		if (m_limit.data[0] & 0x0003 == 0x0003)return 3;
+		if (m_limit.data[0] & 0x03 == 0x03)return 3;
 		else
 		{
-			if (m_limit.data[0] & 0x0001)return 1;
-			else if (m_limit.data[0] & 0x0002) return 2;
+			if (m_limit.data[0] & 0x01)return 1;
+			else if (m_limit.data[0] & 0x02) return 2;
 			else return 0;
 		}
 	}
-	else
-		qDebug() << "m_limit: err";
 	return -1;
 }
-
 
 int DriverIMCnet::getAxisORGstatus(int axis)
 {
@@ -303,7 +271,6 @@ int DriverIMCnet::getAxisORGstatus(int axis)
 		return -1;
 }
 
-
 //io...
 int DriverIMCnet::writeBit(int bit, int value)
 {
@@ -315,7 +282,6 @@ int DriverIMCnet::writeBit(int bit, int value)
 	}
 	return -1;
 }
-
 
 int DriverIMCnet::readBit(int port_bit)
 {

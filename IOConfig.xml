@@ -42,5 +42,16 @@
 			<PORT>6</PORT>
 			<VALUE>0</VALUE>
 		</OUTPUT>
+
 	</OUTPUTCONFIG>
+	<INPUTCONFIG>
+		<INPUT>
+			<NAME>空抓</NAME>
+			<PORT>2</PORT>
+		</INPUT>
+		<INPUT>
+			<NAME>空吸</NAME>
+			<PORT>1</PORT>
+		</INPUT>
+	</INPUTCONFIG>
 </CONFIG>
