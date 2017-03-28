@@ -1,6 +1,6 @@
-/**
-* @file				Çı¶¯Ä£°åÀà
-* @brief			±¾Àà¼¯³ÉÁË³£ÓÃµÄÔË¶¯ĞÎÊ½£¬°üÀ¨£º¶àÖáÔË¶¯¡¢Ïà¶ÔÎ»ÖÃÔË¶¯¡¢¾ø¶ÔÎ»ÖÃÔË¶¯¡¢µã¶¯ÒÔ¼°IOµÈ¡£Í¨¹ı±¾Ä£°åÓë¶ÔÓ¦µÄÇı¶¯Æ÷Àà°ó¶¨£¬¿ÉÒÔ¼ò»¯Çı¶¯Æ÷ÀàĞÍ±ä¸üÓëÅäÖÃ¡£
+ï»¿/**
+* @file				é©±åŠ¨æ¨¡æ¿ç±»
+* @brief			æœ¬ç±»é›†æˆäº†å¸¸ç”¨çš„è¿åŠ¨å½¢å¼ï¼ŒåŒ…æ‹¬ï¼šå¤šè½´è¿åŠ¨ã€ç›¸å¯¹ä½ç½®è¿åŠ¨ã€ç»å¯¹ä½ç½®è¿åŠ¨ã€ç‚¹åŠ¨ä»¥åŠIOç­‰ã€‚é€šè¿‡æœ¬æ¨¡æ¿ä¸å¯¹åº”çš„é©±åŠ¨å™¨ç±»ç»‘å®šï¼Œå¯ä»¥ç®€åŒ–é©±åŠ¨å™¨ç±»å‹å˜æ›´ä¸é…ç½®ã€‚
 * @author			Jay_Jou
 * @date				2017-03-27
 * @version			v1.0.0
@@ -11,7 +11,6 @@
 
 #ifndef DRIVERS_H
 #define DRIVERS_H
-
 #include<qobject.h>
 #include<qmap.h>
 #include<qtimer.h>
@@ -21,13 +20,8 @@
 #include<qfile.h>
 #include<qbytearray.h>
 
-#include<iostream>
-#include<typeinfo>
-using namespace std;
-
 #include"DriverSpace.h"
 using namespace DriverSpace;
-
 
 template<class T>
 class DRIVERS
@@ -36,9 +30,9 @@ class DRIVERS
 public:
 
 
-/** ÀàÄ£°å¹¹Ôìº¯Êı
+/** ç±»æ¨¡æ¿æ„é€ å‡½æ•°
 *
-*	ÀàÄ£°å¹¹Ôìº¯Êı£¬¹¹Ôìº¯ÊıÖĞ»á³õÊ¼»¯Èı¸öÄÚ²¿±äÁ¿£¬·Ö±ğÎª£ºi_jogspeed,i_moveSpeed,i_zeroSpeed	
+*	ç±»æ¨¡æ¿æ„é€ å‡½æ•°ï¼Œæ„é€ å‡½æ•°ä¸­ä¼šåˆå§‹åŒ–ä¸‰ä¸ªå†…éƒ¨å˜é‡ï¼Œåˆ†åˆ«ä¸ºï¼ši_jogspeed,i_moveSpeed,i_zeroSpeed	
 */
 	DRIVERS<T>();
 
@@ -49,194 +43,245 @@ Axis functional funcs...
 ********************************************************************/
 
 
-/** ³õÊ¼»¯º¯Êı
-*	³õÊ¼»¯Öá²ÎÊıºÍIO£¬·Ö±ğ´ÓAxisXMLºÍIOXMLÖĞ¶ÁÈ¡²ÎÊı£¬È»ºóÍ¨¹ıinitFromAxisXMLºÍinitFromAxisXML½øĞĞÅäÖÃ
-*	@param	AxisXMLpath	Öá²ÎÊıÅäÖÃÎÄ¼ş£¨XML¸ñÊ½£©µÄ´æ´¢Â·¾¶
-*	@param	IOXMLpath	IOÅäÖÃÎÄ¼ş£¨XML¸ñÊ½£©µÄ´æ´¢Â·¾¶
-*	@return	·µ»ØÖµ£º0³É¹¦£¬-1ÖáÅäÖÃ²»³É¹¦£¬-2ÅäÖÃÎÄ¼ş¶ÁÈ¡Ê§°Ü
+/** åˆå§‹åŒ–å‡½æ•°
+*	åˆå§‹åŒ–è½´å‚æ•°å’ŒIOï¼Œåˆ†åˆ«ä»AxisXMLå’ŒIOXMLä¸­è¯»å–å‚æ•°ï¼Œç„¶åé€šè¿‡initFromAxisXMLå’ŒinitFromAxisXMLè¿›è¡Œé…ç½®
+*	@param	AxisXMLpath	è½´å‚æ•°é…ç½®æ–‡ä»¶ï¼ˆXMLæ ¼å¼ï¼‰çš„å­˜å‚¨è·¯å¾„
+*	@param	IOXMLpath	IOé…ç½®æ–‡ä»¶ï¼ˆXMLæ ¼å¼ï¼‰çš„å­˜å‚¨è·¯å¾„
+*	@return	0æˆåŠŸï¼Œ-1è½´é…ç½®ä¸æˆåŠŸï¼Œ-2é…ç½®æ–‡ä»¶è¯»å–å¤±è´¥
 *	@see	initFromAxisXML(QString path)
 *	@see	initFromIOXML(QString path)
+*	@note	å»ºè®®åœ¨åˆ›å»ºå®ä¾‹åå³è¿›è¡Œè¯¥åˆå§‹åŒ–å‡½æ•°ï¼Œæ ¹æ®è¿”å›å€¼åˆ¤æ–­åç»­è¿è¡Œã€‚
 */
 	int	 init(QString AxisXMLpath = "./AxisConfig.xml",QString IOXMLpath="./IOConfig.xml");
 
 
 
-
+/** è¯»å–è½´é…ç½®æ–‡ä»¶å‡½æ•°
+*	æ ¹æ®æä¾›çš„è·¯å¾„å‚æ•°pathï¼Œè¯»å–è¯¥XMLæ ¼å¼æ–‡ä»¶ï¼Œå¹¶å°†è½´å‚æ•°é€šè¿‡QList<QByteArray>çš„æ ¼å¼è¿”å›ç»™è½´åˆå§‹åŒ–å‡½æ•°è¿›è¡Œé…ç½®ã€‚
+*	@param	path	è½´å‚æ•°é…ç½®æ–‡ä»¶ï¼ˆXMLæ ¼å¼ï¼‰çš„å­˜å‚¨è·¯å¾„
+*	@return	è¿”å›å€¼ï¼šè½´é…ç½®å‚æ•°QList<QByteArray>ï¼Œè‹¥pathæ–‡ä»¶ä¸å­˜åœ¨æˆ–æ–‡ä»¶å†…å®¹é”™è¯¯ï¼Œåˆ™è¿”å›ç©ºçš„QList<QByteArray>().
+*	@note
+*/
 	QList<QByteArray>  initFromAxisXML(QString path);
 
-	/*
-	<´ÓXMLÖĞ»ñÈ¡IOÅäÖÃ>
-	²Î	Êı£ºÎÄ¼şÂ·¾¶
-	·µ»ØÖµ£º0³É¹¦£¬-1Ê§°Ü
-	*/
+/** è¯»å–IOé…ç½®æ–‡ä»¶å‡½æ•°
+*	æ ¹æ®æä¾›çš„è·¯å¾„å‚æ•°pathï¼Œè¯»å–è¯¥XMLæ ¼å¼æ–‡ä»¶ï¼Œå¹¶å°†IOä»¥QMapå®¹å™¨è¿›è¡Œä¿å­˜
+*	@param	path	è½´å‚æ•°é…ç½®æ–‡ä»¶ï¼ˆXMLæ ¼å¼ï¼‰çš„å­˜å‚¨è·¯å¾„
+*	@return	0æˆåŠŸï¼Œ-1å¤±è´¥
+*	@see	getOutputMap()
+*	@see	getInputMap()
+*	@note	pathè·¯å¾„æ–‡ä»¶ä¸­åº”åŒ…å«<OUTPUT>å’Œ<INPUT>ä¸¤ç±»IOé…ç½®ã€‚
+*/
 	int  initFromIOXML(QString path);
 
 
-	/*
-	<ÈıÖáÁª¶¯>
-	²Î	Êı:Axis1,Axis2,Axis3±íÊ¾ÖáºÅ
-		   _1Target~_3Target±íÊ¾Èı¸öÖáµÄ Âß¼­Î»ÖÃ »ò Ö´ĞĞ»ú¹¹Êµ¼ÊÖ´ĞĞ¾àÀë
-		   MoveSpeedÔËĞĞËÙ¶È
-	·µ»ØÖµ£ºvoid
-	±¸	×¢£ºÖØÔØÁ½¸ö°æ±¾£¬Ò»¸öÄ¿±êÎ»ÖÃÖµÎªÂß¼­Î»ÖÃ£¬Ò»¸öÎªÖ´ĞĞ»ú¹¹Êµ¼ÊÎ»ÖÃ
-	*/
-	void moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int Axis3, int _3Target, int MoveSpeed=i_moveSpeed);								// 3ÖáÁª¶¯ µ¥Î»step
+/** ä¸‰è½´è”åŠ¨å‡½æ•°
+*	æ ¹æ®æä¾›çš„è½´å·ã€è½´ä½ç½®ã€è¿è¡Œé€Ÿåº¦è¿›è¡Œä¸‰è½´è”åŠ¨
+*	@param	Axis1	ç¬¬ä¸€ä¸ªè½´è½´å·
+*	@param	_1Target	ç¬¬ä¸€ä¸ªè½´ç›®æ ‡ä½ç½®
+*	@param	Axis2	ç¬¬äºŒä¸ªè½´è½´å·
+*	@param	_2Target	ç¬¬äºŒä¸ªè½´ç›®æ ‡ä½ç½®
+*	@param	Axis3	ç¬¬ä¸‰ä¸ªè½´è½´å·
+*	@param	_3Target	ç¬¬ä¸‰ä¸ªè½´ç›®æ ‡ä½ç½®
+*	@return	void
+*	@see	moveTo(int Axis1, double _1Target, int Axis2, double _2Target, int Axis3, double _3Target, int MoveSpeed = i_moveSpeed)
+*	@note	è¯¥å‡½æ•°ä¸­ç›®æ ‡ä½ç½®ä¸ºé©±åŠ¨å™¨é€»è¾‘ä½ç½®ï¼Œå¹¶éæ‰§è¡Œæœºæ„å®é™…ç‰©ç†ä½ç½®ã€‚
+*/
+	void moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int Axis3, int _3Target, int MoveSpeed=i_moveSpeed);
+
+
+/** ä¸‰è½´è”åŠ¨å‡½æ•°
+*	é‡è½½ç‰ˆæœ¬
+*	@param	Axis1	ç¬¬ä¸€ä¸ªè½´è½´å·
+*	@param	_1Target	ç¬¬ä¸€ä¸ªè½´ç›®æ ‡ä½ç½®
+*	@param	Axis2	ç¬¬äºŒä¸ªè½´è½´å·
+*	@param	_2Target	ç¬¬äºŒä¸ªè½´ç›®æ ‡ä½ç½®
+*	@param	Axis3	ç¬¬ä¸‰ä¸ªè½´è½´å·
+*	@param	_3Target	ç¬¬ä¸‰ä¸ªè½´ç›®æ ‡ä½ç½®
+*	@return	void
+*	@see	moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int Axis3, int _3Target, int MoveSpeed=i_moveSpeed)
+*	@note	è¯¥å‡½æ•°ä¸­ç›®æ ‡ä½ç½®ä¸ºæ‰§è¡Œæœºæ„å®é™…ç‰©ç†ç›®æ ‡ä½ç½®ï¼›å‡½æ•°æ ¹æ®è½´é…ç½®å‚æ•°PPRå’ŒMPPå°†æ‰§è¡Œæœºæ„å®é™…ç‰©ç†ç›®æ ‡ä½ç½®è½¬æ¢æˆé©±åŠ¨å™¨é€»è¾‘ä½ç½®ï¼Œå†è°ƒç”¨moveToï¼ˆint Axis1, int _1Target, int Axis2, int _2Target, int Axis3, int _3Target, int MoveSpeed=i_moveSpeed)æ¥å®ç°
+*/
 	void moveTo(int Axis1, double _1Target, int Axis2, double _2Target, int Axis3, double _3Target, int MoveSpeed = i_moveSpeed);
 
 
-	/*
-	<ÎåÖáÁª¶¯>
-	²Î	Êı£ºAxis1~Axis5±íÊ¾ÖáºÅ
-			1Target~_5Target±íÊ¾ÖáµÄ Âß¼­Î»ÖÃ »ò Ö´ĞĞ»ú¹¹Êµ¼ÊÖ´ĞĞ¾àÀë
-			MoveSpeedÔËĞĞËÙ¶È
-	·µ»ØÖµ£ºvoid
-	±¸	×¢£ºÖØÔØÁ½¸ö°æ±¾£¬Ò»¸öÄ¿±êÎ»ÖÃÖµÎªÂß¼­Î»ÖÃ£¬Ò»¸öÎªÖ´ĞĞ»ú¹¹Êµ¼ÊÎ»ÖÃ
-	*/
+/** äº”è½´è”åŠ¨å‡½æ•°
+*	æ ¹æ®æä¾›çš„è½´å·ã€è½´ä½ç½®ã€è¿è¡Œé€Ÿåº¦è¿›è¡Œäº”è½´è”åŠ¨
+*	@param	Axis1	ç¬¬ä¸€ä¸ªè½´è½´å·
+*	@param	_1Target	ç¬¬ä¸€ä¸ªè½´ç›®æ ‡ä½ç½®
+*	@param	Axis2	ç¬¬äºŒä¸ªè½´è½´å·
+*	@param	_2Target	ç¬¬äºŒä¸ªè½´ç›®æ ‡ä½ç½®
+*	@param	Axis3	ç¬¬ä¸‰ä¸ªè½´è½´å·
+*	@param	_3Target	ç¬¬ä¸‰ä¸ªè½´ç›®æ ‡ä½ç½®
+*	@param	Axis4	ç¬¬å››ä¸ªè½´è½´å·
+*	@param	_4Target	ç¬¬å››ä¸ªè½´ç›®æ ‡ä½ç½®
+*	@param	Axis4	ç¬¬äº”ä¸ªè½´è½´å·
+*	@param	_4Target	ç¬¬äº”ä¸ªè½´ç›®æ ‡ä½ç½®
+*	@return	void
+*	@see	moveTo(int Axis1, double _1Target, int Axis2, double _2Target, int Axis3, double _3Target, int Axis4, double _4Target, int Axis5, double _5Target, int MoveSpeed = i_moveSpeed)
+*	@note	è¯¥å‡½æ•°ä¸­ç›®æ ‡ä½ç½®ä¸ºé©±åŠ¨å™¨é€»è¾‘ä½ç½®ï¼Œå¹¶éæ‰§è¡Œæœºæ„å®é™…ç‰©ç†ä½ç½®ã€‚
+*/
 	void moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int Axis3, int _3Target, int Axis4, int _4Target, int Axis5, int _5Target, int MoveSpeed=i_moveSpeed);
+
+
+
+/** äº”è½´è”åŠ¨å‡½æ•°
+*	é‡è½½ç‰ˆæœ¬ï¼Œå‡½æ•°å†…éƒ¨é€šè¿‡è½´é…ç½®å‚æ•°PPRå’ŒMPPå°†æ‰§è¡Œæœºæ„å®é™…ç‰©ç†ç›®æ ‡ä½ç½®è½¬æ¢æˆé©±åŠ¨å™¨é€»è¾‘ä½ç½®è¿›è¡Œå®ç°ã€‚
+*	@param	Axis1	ç¬¬ä¸€ä¸ªè½´è½´å·
+*	@param	_1Target	ç¬¬ä¸€ä¸ªè½´ç›®æ ‡ä½ç½®
+*	@param	Axis2	ç¬¬äºŒä¸ªè½´è½´å·
+*	@param	_2Target	ç¬¬äºŒä¸ªè½´ç›®æ ‡ä½ç½®
+*	@param	Axis3	ç¬¬ä¸‰ä¸ªè½´è½´å·
+*	@param	_3Target	ç¬¬ä¸‰ä¸ªè½´ç›®æ ‡ä½ç½®
+*	@param	Axis4	ç¬¬å››ä¸ªè½´è½´å·
+*	@param	_4Target	ç¬¬å››ä¸ªè½´ç›®æ ‡ä½ç½®
+*	@param	Axis4	ç¬¬äº”ä¸ªè½´è½´å·
+*	@param	_4Target	ç¬¬äº”ä¸ªè½´ç›®æ ‡ä½ç½®
+*	@return	void
+*	@see	moveTo(int Axis1, int _1Target, int Axis2, int _2Target, int Axis3, int _3Target, int Axis4, int _4Target, int Axis5, int _5Target, int MoveSpeed=i_moveSpeed)
+*	@note	è¯¥å‡½æ•°ä¸­ç›®æ ‡ä½ç½®ä¸ºæ‰§è¡Œæœºæ„å®é™…ç‰©ç†ç›®æ ‡ä½ç½®ï¼›
+*/
 	void moveTo(int Axis1, double _1Target, int Axis2, double _2Target, int Axis3, double _3Target, int Axis4, double _4Target, int Axis5, double _5Target, int MoveSpeed = i_moveSpeed);
 
-	/*
-	<µ¥Öá¾ø¶ÔÔË¶¯>
-	²Î	Êı£º	axis:ÖáºÅ
-			pos:¾ø¶ÔÎ»ÖÃµã£¬ÒÔÂß¼­Î»ÖÃµ¥Î»
-			speed:ÔËĞĞËÙ¶È
-	·µ»ØÖµ£ºvoid
-	*/
+/** å•è½´ç»å¯¹ä½ç½®è¿åŠ¨
+*	è½´å·ä¸ºaxisçš„è½´ä»¥speedçš„é€Ÿåº¦åŒ€é€Ÿè¿è¡Œè‡³ä½ç½®pos
+*	@param	axis	è½´å·
+*	@param	pos		è½´ç›®æ ‡ä½ç½®
+*	@param	speed	è½´è¿è¡Œé€Ÿåº¦
+*	@return	void
+*	@see	axisMoveAbsolute(int axis, double pos, int speed)
+*	@note	å‚æ•°ä¸­posä¸ºé€»è¾‘ä½ç½®ï¼Œç±»å‹ä¸ºintï¼Œå¹¶éæ‰§è¡Œæœºæ„çš„å®é™…ä½ç½®
+*/
 	void axisMoveAbsolute(int axis, int pos, int speed);
+
+
+/** å•è½´ç»å¯¹ä½ç½®è¿åŠ¨
+*	é‡è½½ç‰ˆæœ¬ï¼Œå‡½æ•°å†…éƒ¨é€šè¿‡è°ƒç”¨axisMoveAbsolute(int axis, int pos, int speed)å®ç°
+*	@param	axis	è½´å·
+*	@param	pos		è½´ç›®æ ‡ä½ç½®
+*	@param	speed	è½´è¿è¡Œé€Ÿåº¦
+*	@return	void
+*	@see	axisMoveAbsolute(int axis, int pos, int speed)
+*	@note	å‚æ•°ä¸­posä¸ºæ‰§è¡Œæœºæ„å®é™…ä½ç½®ï¼Œç±»å‹ä¸ºdoubleï¼Œè°ƒç”¨æ—¶è¯·æ³¨æ„ç±»å‹åŒ¹é…
+*/
 	void axisMoveAbsolute(int axis, double pos, int speed);
 
 
-	/*
-	<µ¥ÖáÏà¶ÔÔË¶¯>
-	²Î	Êı£ºaxis:ÖáºÅ
-			steps:Ïà¶ÔÎ»ÒÆ³¤¶È
-			speed:ÔËĞĞËÙ¶È
-	·µ»ØÖµ£ºvoid
-	*/
+/** å•è½´ç›¸å¯¹ä½ç§»è¿åŠ¨
+*	è½´å·ä¸ºaxisçš„è½´ä»¥speedçš„é€Ÿåº¦åšç›¸å¯¹ä½ç§»è·ç¦»steps
+*	@param	axis	è½´å·
+*	@param	steps	è½´ç›®æ ‡ä½ç½®
+*	@param	speed	è½´è¿è¡Œé€Ÿåº¦
+*	@return	void
+*	@see	axisMoveRelative(int axis, double steps, int speed)
+*	@note	å‚æ•°ä¸­stepsä¸ºé€»è¾‘ä½ç½®ï¼Œç±»å‹ä¸ºintï¼Œè°ƒç”¨æ—¶è¯·æ³¨æ„ç±»å‹åŒ¹é…
+*	@note	è°ƒç”¨å‡½æ•°æ—¶ï¼Œè¯·æ³¨æ„æ‰§è¡Œæœºæ„é™ä½ä½ç½®ã€‚
+*/
 	void axisMoveRelative(int axis, int steps, int speed);
+
+
+
+/** å•è½´ç›¸å¯¹ä½ç§»è¿åŠ¨
+*	é‡è½½ç‰ˆæœ¬ï¼Œå‡½æ•°å†…éƒ¨é€šè¿‡è°ƒç”¨axisMoveRelative(int axis, int steps, int speed)æ¥å®ç°
+*	@param	axis	è½´å·
+*	@param	steps	è½´ç›®æ ‡ä½ç½®
+*	@param	speed	è½´è¿è¡Œé€Ÿåº¦
+*	@return	void
+*	@see	axisMoveRelative(int axis, double steps, int speed)
+*	@note	å‚æ•°ä¸­stepsä¸ºæ‰§è¡Œæœºæ„å®é™…ä½ç½®ï¼Œç±»å‹ä¸ºdoubleï¼Œè°ƒç”¨æ—¶è¯·æ³¨æ„ç±»å‹åŒ¹é…
+*	@note	è°ƒç”¨å‡½æ•°æ—¶ï¼Œè¯·æ³¨æ„æ‰§è¡Œæœºæ„é™ä½ä½ç½®ã€‚
+*/
 	void axisMoveRelative(int axis, double steps, int speed);
 
-	/*
-	<µ¥Öá³ÖĞøÔË¶¯>
-	²Î	Êı£ºaxis:ÖáºÅ
-			dir:·½Ïò
-			speed:ÔËĞĞËÙ¶È
-	·µ»ØÖµ£ºvoid
-	*/
+
+/** å•è½´æŒç»­ä½ç§»è¿åŠ¨
+*	è½´å·ä¸ºaxisçš„è½´ä»¥speedçš„é€Ÿåº¦åŒ€é€Ÿæœç€diræ–¹å‘æŒç»­è¿åŠ¨
+*	@param	axis	è½´å·
+*	@param	dir		è½´è¿è¡Œæ–¹å‘
+*	@param	speed	è½´è¿è¡Œé€Ÿåº¦
+*	@return	void
+*	@note	è¯¥å‡½æ•°é€šå¸¸å¯ä»¥ç”¨äºç‚¹åŠ¨åŠŸèƒ½
+*	@note	è°ƒç”¨å‡½æ•°æ—¶ï¼Œè¯·æ³¨æ„æ‰§è¡Œæœºæ„é™ä½ä½ç½®ã€‚
+*/
 	void axisMoveVel(int axis, int dir, int speed);
 
 
-	/*
-	<Í£Ö¹>
-	²Î	Êı£ºÎŞ
-	·µ»ØÖµ£ºvoid
-	*/
+/** åœæ­¢æ‰€æœ‰è½´è¿åŠ¨
+*	è¯¥å‡½æ•°ä¼šè°ƒç”¨å…·ä½“è½´å®ç°çš„stop()å‡½æ•°
+*	@return	void
+*/
 	void stop();
 
 
-	/*
-	<ÔİÍ£>
-	²Î	Êı£ºÎŞ
-	·µ»ØÖµ£ºvoid
-	±¸	×¢£ºÆäÊµµ÷ÓÃµÄÊÇstop()º¯Êı
-	*/
+/** æš‚åœæ‰€æœ‰è½´è¿åŠ¨
+*	è¯¥å‡½æ•°ä¼šè°ƒç”¨å…·ä½“è½´å®ç°çš„hold()å‡½æ•°
+*	@return	void
+*/
 	void hold();
 
-	/*
-	<¹Ø±Õ¿ØÖÆ¿¨>
-	²Î	Êı£ºÎŞ
-	·µ»ØÖµ£ºvoid
-	*/
+/** å…³é—­æ§åˆ¶å¡å¥æŸ„
+*	è¯¥å‡½æ•°ä¼šè°ƒç”¨å…·ä½“è½´å®ç°çš„close()å‡½æ•°
+*	@return	void
+*/
 	void close();
 
-	/*
-	<µã¶¯¿ªÊ¼>
-	²Î	Êı£ºaxisÖáºÅ
-			dir·½Ïò
-	·µ»ØÖµ£ºvoid
-	*/
-	void jogStart(int axis, int dir,int jogspeed);
-	void jogStart(int axis,int dir);
 
-	/*
-	<µã¶¯½áÊø>
-	²Î	Êı£ºaxisÖáºÅ
-	·µ»ØÖµ£ºvoid
-	*/
+/** å•è½´ç‚¹åŠ¨è¿åŠ¨
+*	è½´å·ä¸ºaxisçš„è½´ä»¥jogspeedçš„é€Ÿåº¦åŒ€é€Ÿæœç€diræ–¹å‘æŒç»­è¿åŠ¨
+*	@param	axis	è½´å·
+*	@param	dir		è½´è¿è¡Œæ–¹å‘
+*	@param	jogspeedè½´è¿è¡Œé€Ÿåº¦
+*	@return	void
+*	@see	setJogSpeed(int jogspeed)
+*	@note	jogspeedé»˜è®¤å€¼ä¸ºi_jogspeed,å€¼i_jogspeedå¯ä»¥é€šè¿‡setJogSpeedå‡½æ•°è¿›è¡Œè®¾ç½®
+*/
+	void jogStart(int axis, int dir,int jogspeed=i_jogspeed);
+
+/** å•è½´ç‚¹åŠ¨åœæ­¢
+*	è½´å·ä¸ºaxisçš„è½´åœæ­¢è¿åŠ¨
+*	@param	axis	è½´å·
+*	@return	void
+*/
 	void jogStop(int axis);
 
 
-
-	/*
-	<¿ªÊ¼¸üĞÂÖáÎ»ÖÃĞÅÏ¢>
-	²Î	Êı£ºmsec¼ÆÊ±Æ÷Ê±¼ä£¬µ¥Î»ºÁÃë
-	·µ»ØÖµ£ºvoid
-	±¸	×¢£º¿ªÊ¼timerAxisPos¼ÆÊ±Æ÷
-	*/
-	void startAxisPosUpdate(int msec=50);
-
-	/*
-	<Í£Ö¹¸üĞÂÖáÎ»ÖÃĞÅÏ¢>
-	²Î	Êı£ºÎŞ
-	·µ»ØÖµ£ºvoid
-	±¸	×¢£ºÍ£Ö¹timerAxisPos¼ÆÊ±Æ÷
-	*/
-	void stopAxisPosUpdate();
-
-
-
-	/*
-	<¿ªÊ¼¸üĞÂÖáÏŞÎ»ĞÅÏ¢>
-	²Î	Êı£ºmsec¼ÆÊ±Æ÷Ê±¼ä£¬µ¥Î»ºÁÃë
-	·µ»ØÖµ£ºvoid
-	±¸	×¢£º¿ªÊ¼timerAxisLim¼ÆÊ±Æ÷
-	*/
-	void startAxisLimUpdate(int msec = 50);
-	
-	/*
-	<Í£Ö¹¸üĞÂÖáÏŞÎ»ĞÅÏ¢>
-	²Î	Êı£ºÎŞ
-	·µ»ØÖµ£ºvoid
-	±¸	×¢£ºÍ£Ö¹timerAxisLim¼ÆÊ±Æ÷
-	*/
-	void stopAxisLimUpdate();
 
 /*******************************************************************
 
 AxisInfoMap operations...
 
 int	   Axis = -1;
-double m_screwPitchX;		// Ë¿¸Ëµ¼³Ì
-double m_xPPR;				// Ã¿×ªÂö³åÊı
-double m_xPPM;				// Ã¿mmÂö³åÊı
-double m_xMPP;				// Ã¿¸öÂö³å¶àÉÙmm
+double m_screwPitchX;		// ä¸æ†å¯¼ç¨‹
+double m_xPPR;				// æ¯è½¬è„‰å†²æ•°
+double m_xPPM;				// æ¯mmè„‰å†²æ•°
+double m_xMPP;				// æ¯ä¸ªè„‰å†²å¤šå°‘mm
 
 ********************************************************************/
 
-	/*
-	<Ìí¼ÓÖá>
-	²Î	Êı£ºAxisNameÖáÃû³Æ£¬×Ö·û´®¸ñÊ½
-			AxisÖáºÅ
-			m_screwPitchXÖáË¿¸Ëµ¼³Ì
-			m_xPPRÖáÃ¿×ªÂö³åÊı
-	·µ»ØÖµ£ºvoid
-	*/
+/** æ·»åŠ è½´ä¿¡æ¯
+*	æ·»åŠ è½´åç§°AxisNameã€è½´å·axisã€ä¸æ†å¯¼ç¨‹m_screwPitchXã€æ¯è½¬è„‰å†²æ•°m_xPPRç­‰ä¿¡æ¯ï¼Œæ¯ä¸ªè½´çš„ä¿¡æ¯ä¼šä¿å­˜åœ¨å†…éƒ¨å˜é‡AxisInfoMapä¸­ã€‚
+*	@param	AxisName	è½´åç§°
+*	@param	axis		è½´å·
+*	@param	m_screwPitchX	è½´ä¸æ†å¯¼ç¨‹
+*	@param	m_xPPR		è½´æ¯è½¬è„‰å†²æ•°
+*	@return	void
+*	@note	æ ¹æ®m_xPPRã€m_screwPitchXå‚æ•°ï¼Œå‡½æ•°è®¡ç®—å‡ºPPMã€MPPç­‰å‚æ•°å€¼ï¼Œä¸€å¹¶ä¿å­˜ã€‚
+*	@note	è‹¥åœ¨å‡½æ•°è°ƒç”¨å‰AxisInfoMapä¸­å·²å­˜åœ¨AxisNameåç§°çš„è½´ä¿¡æ¯ï¼Œåˆ™å‡½æ•°æ‰§è¡Œåï¼Œå·²æœ‰çš„AxisNameè½´ä¿¡æ¯ä¼šè¢«æ–°çš„å‚æ•°ä¿¡æ¯è¦†ç›–ã€‚
+*/
 	void AxisInfoInsertItem(QString AxisName,int axis,double m_screwPitchX, double m_xPPR);
 
 
-	/*
-	<É¾³ıÄ³¸öÖáĞÅÏ¢>
-	²Î	Êı£ºAxisNameÖáÃû³Æ£¬×Ö·û´®¸ñÊ½
-	·µ»ØÖµ£º·µ»ØÉ¾³ıµÄitemÊı£¬Í¨³£Îª1»ò0
-	*/
+/** åˆ é™¤è½´ä¿¡æ¯
+*	åˆ é™¤è½´åç§°ä¸ºAxisNameçš„ç›¸å…³è½´ä¿¡æ¯
+*	@param	AxisName	è½´åç§°
+*	@return	åˆ é™¤é”®å€¼ä¸ºAxisNameçš„æ¡æ•°ï¼Œé€šå¸¸ä¸º0æˆ–1
+*/
 	int AxisInfoDeleteItem(QString AxisName);
 
 
-	/*
-	<Çå¿ÕÖáĞÅÏ¢>
-	²Î	Êı£ºÎŞ
-	·µ»ØÖµ£ºvoid
-	*/
+/** æ¸…ç©ºè½´ä¿¡æ¯
+*	@return	æ— 
+*/
 	void AxisInfoClear();
 	
 
@@ -245,33 +290,36 @@ double m_xMPP;				// Ã¿¸öÂö³å¶àÉÙmm
 
 setters...
 
-jogspeed	µã¶¯ËÙ¶È
-i_moveSpeed ÔËĞĞËÙ¶È
-i_zeroSpeed »ØÁãËÙ¶È
+jogspeed	ç‚¹åŠ¨é€Ÿåº¦
+i_moveSpeed è¿è¡Œé€Ÿåº¦
+i_zeroSpeed å›é›¶é€Ÿåº¦
 
 ********************************************************************/
 	
 
 
-	/*
-	<ÉèÖÃµã¶¯ËÙ¶È>
-	²Î	Êı£ºµã¶¯ËÙ¶È£¬Çı¶¯Æ÷Âß¼­ËÙ¶È
-	·µ»ØÖµ£ºvoid
-	*/
+/** è®¾ç½®ç‚¹åŠ¨é€Ÿåº¦
+*	è®¾ç½®å†…éƒ¨å˜é‡i_jogspeedä¸ºjogspeed
+*	@param	jogspeed	ç‚¹åŠ¨é€Ÿåº¦å€¼
+*	@return	void
+*	@see	getJogSpeed()
+*/
 	void setJogSpeed(int jogspeed);
 
-	/*
-	<ÉèÖÃÔËĞĞËÙ¶È>
-	²Î	Êı£ºÔËĞĞËÙ¶ÈÖµ
-	·µ»ØÖµ£ºvoid
-	*/
+/** è®¾ç½®è¿è¡Œé€Ÿåº¦
+*	è®¾ç½®å†…éƒ¨å˜é‡i_moveSpeedä¸ºmovespeed
+*	@param	movespeed	è¿è¡Œé€Ÿåº¦å€¼
+*	@return	void
+*	@see	getMoveSpeed()
+*/
 	void setMoveSpeed(int movespeed);
 
-	/*
-	<ÉèÖÃ»ØÁãËÙ¶È>
-	²Î	Êı£º»ØÁãËÙ¶ÈÖµ
-	·µ»ØÖµ£ºvoid
-	*/
+/** è®¾ç½®å›é›¶é€Ÿåº¦
+*	è®¾ç½®å†…éƒ¨å˜é‡i_zeroSpeedä¸ºzerospeed
+*	@param	zerospeed	å›é›¶é€Ÿåº¦å€¼
+*	@return	void
+*	@see	getZeroSpeed()
+*/
 	void setZeroSpeed(int zerospeed);
 
 
@@ -280,100 +328,137 @@ i_zeroSpeed »ØÁãËÙ¶È
 
 getters...
 
-jogspeed µã¶¯ËÙ¶È
+jogspeed ç‚¹åŠ¨é€Ÿåº¦
 int		i_moveSpeed;
 int		i_zeroSpeed;
 
 ********************************************************************/
 
-	/*
-	<»ñÈ¡µã¶¯ËÙ¶È>
-	²Î	Êı£ºÎŞ
-	·µ»ØÖµ£ºi_jogspeedµÄÖµ,const int &ÀàĞÍ
-	*/
+/** è·å–ç‚¹åŠ¨é€Ÿåº¦
+*	è·å–å†…éƒ¨å˜é‡i_jogspeedå€¼
+*	@return	ç‚¹åŠ¨é€Ÿåº¦å€¼
+*	@see	setJogSpeed(int jogspeed)
+*/
 	const int & getJogSpeed() const;
 
-	/*
-	<»ñÈ¡ÔËĞĞËÙ¶È>
-	²Î	Êı£ºÎŞ
-	·µ»ØÖµ£º·µ»Øi_moveSpeedµÄÖµ£¬const int &ÀàĞÍ
-	*/
+/** è·å–è¿è¡Œé€Ÿåº¦
+*	è·å–å†…éƒ¨å˜é‡i_moveSpeedå€¼
+*	@return	è¿è¡Œé€Ÿåº¦å€¼
+*	@see	setMoveSpeed(int movespeed)
+*/
 	const int & getMoveSpeed() const;
 
-	/*
-	<»ñÈ¡»ØÁãËÙ¶È>
-	²Î	Êı£ºÎŞ
-	·µ»ØÖµ£ºi_zeroSpeedµÄÖµ£¬const int &ÀàĞÍ
-	*/
+/** è·å–å›é›¶é€Ÿåº¦
+*	è·å–å†…éƒ¨å˜é‡i_zeroSpeedå€¼
+*	@return	å›é›¶é€Ÿåº¦å€¼
+*	@see	setZeroSpeed(int zerospeed)
+*/
 	const int & getZeroSpeed() const;
 
-
-
-	/*
-	<»ñÈ¡µ±Ç°Î»ÖÃ>
-	²Î	Êı£ºÖáºÅ»òÖáÃû³Æ
-	·µ»ØÖµ£ºµ±Ç°Âß¼­Î»ÖÃÖµ
-	±¸	×¢£ºÖØÔØ2¸ö°æ±¾£¬²ÎÊıÎ»ÖáºÅ»òÖáÃû³Æ
-	*/
+/** è·å–è½´å½“å‰é€»è¾‘ä½ç½®
+*	è·å–è½´å·ä¸ºaxisçš„è½´çš„å½“å‰ä½ç½®
+*	@param	axis	è½´å·
+*	@return	è½´çš„å½“å‰é€»è¾‘ä½ç½®å€¼ï¼Œç±»å‹int
+*/
 	int		getCurPos(int axis);
+
+/** è·å–è½´å½“å‰é€»è¾‘ä½ç½®
+*	é‡è½½ç‰ˆæœ¬ï¼Œè·å–è½´åç§°ä¸ºaxisNameçš„è½´çš„å½“å‰ä½ç½®
+*	@param	axisName	è½´åç§°
+*	@return	è½´çš„å½“å‰é€»è¾‘ä½ç½®å€¼ï¼Œç±»å‹int
+*/
 	int		getCurPos(QString axisName);
 
 
-	/*
-	<»ñÈ¡µ±Ç°Î»ÖÃ>
-	²Î	Êı£ºÖáºÅ»òÖáÃû³Æ
-	·µ»ØÖµ£ºµ±Ç°Ö´ĞĞ»ú¹¹Êµ¼ÊÎ»ÖÃÖµ
-	±¸	×¢£ºÖØÔØ2¸ö°æ±¾£¬²ÎÊıÎªÖáºÅ»òÖáÃû³Æ
-	*/
+
+/** è·å–è½´å½“å‰å®é™…ä½ç½®
+*	è·å–è½´å·ä¸ºaxisçš„è½´çš„å½“å‰ä½ç½®
+*	@param	axis	è½´å·
+*	@return	è½´çš„å½“å‰å®é™…ä½ç½®å€¼ï¼Œç±»å‹double
+*/
 	double  getCurPosmm(int axis);
+
+
+/** è·å–è½´å½“å‰å®é™…ä½ç½®
+*	é‡è½½ç‰ˆæœ¬ï¼Œè·å–è½´åç§°ä¸ºaxisNameçš„è½´çš„å½“å‰ä½ç½®
+*	@param	axisName	è½´åç§°
+*	@return	è½´çš„å½“å‰å®é™…ä½ç½®å€¼ï¼Œç±»å‹double
+*/
 	double  getCurPosmm(QString axisName);
 
 
-
-	/*
-	<»ñÈ¡ÖáÏŞÎ»ĞÅÏ¢>
-	²Î	Êı£ºaxisNameÖáÃû³Æ »ò axisÖáºÅ
-	·µ»ØÖµ£º-1»ñÈ¡³ö´í,0ÎŞÏŞÎ»£¬1ÕıÏòÏŞÎ»£¬2¸ºÏòÏŞÎ»£¬3Õı¸ºÏòÏŞÎ»
-	±¸	×¢£ºÁ½¸öÖØÔØº¯Êı£¬²ÎÊıÎª axisNameÖáÃû³Æ »ò axisÖá±àºÅ
-	*/
-	int getAxisLimitStatus(QString axisName);
+/** è·å–è½´é™ä½ä¿¡æ¯
+*	è·å–è½´å·ä¸ºaxisçš„è½´çš„é™ä½ä¿¡æ¯
+*	@param	axis	è½´å·
+*	@return	-1è·å–å‡ºé”™,0æ— é™ä½ï¼Œ1æ­£å‘é™ä½ï¼Œ2è´Ÿå‘é™ä½ï¼Œ3æ­£è´Ÿå‘é™ä½
+*	@see	getAxisLimitStatus(QString axisName)
+*/
 	int getAxisLimitStatus(int axis);
 
 
-	/*
-	<»ñÈ¡Ô­µãÖµ>
-	²Î	Êı£ºaxisÖáºÅ »ò axisNameÖáÃû³Æ
-	·µ»ØÖµ£º-1ÎŞ·¨»ñÈ¡£¬0ÎŞĞ§£¬1ÓĞĞ§
-	±¸	×¢£º2¸öÖØÔØ°æ±¾£¬²ÎÊıÎª axisÖáºÅ »ò axisNameÖáÃû³Æ
-	*/
+/** è·å–è½´é™ä½ä¿¡æ¯
+*	é‡è½½ç‰ˆæœ¬ï¼Œè·å–è½´åç§°ä¸ºaxisNameçš„è½´çš„é™ä½ä¿¡æ¯
+*	@param	axisName	è½´åç§°
+*	@return	-1è·å–å‡ºé”™,0æ— é™ä½ï¼Œ1æ­£å‘é™ä½ï¼Œ2è´Ÿå‘é™ä½ï¼Œ3æ­£è´Ÿå‘é™ä½
+*	@see	getAxisLimitStatus(int axis)
+*/
+	int getAxisLimitStatus(QString axisName);
+
+
+/** è·å–åŸç‚¹ä½ä¿¡æ¯
+*	è·å–è½´å·ä¸ºaxisçš„è½´çš„åŸç‚¹ä¿¡æ¯
+*	@param	axis	è½´å·
+*	@return	-1æ— æ³•è·å–ï¼Œ0æ— æ•ˆï¼Œ1æœ‰æ•ˆ
+*	@see	getAxisORGstatus(QString axisName)
+*/
 	int getAxisORGstatus(int axis);
+
+/** è·å–åŸç‚¹ä½ä¿¡æ¯
+*	é‡è½½ç‰ˆæœ¬ï¼Œè·å–è½´åç§°ä¸ºaxisNameçš„è½´çš„åŸç‚¹ä¿¡æ¯
+*	@param	axisName	è½´åç§°
+*	@return	-1æ— æ³•è·å–ï¼Œ0æ— æ•ˆï¼Œ1æœ‰æ•ˆ
+*	@see	getAxisORGstatus(int axis)
+*/
 	int getAxisORGstatus(QString axisName);
 
 
 
-	/*
-	<¸üĞÂÖáµÄÎ»ÖÃĞÅÏ¢>
-	²Î	Êı£ºÎŞ
-	·µ»ØÖµ£ºvoid
-	±¸×¢£º¸üĞÂ¸÷¸öÖáµÄÎ»ÖÃĞÅÏ¢£¬Í¨¹ısigAxisPosUpdateĞÅºÅ·¢ËÍ
+
+	/** è·å–å„ä¸ªè½´ä½ç½®ä¿¡æ¯
+	*	è·å–å†…éƒ¨å˜é‡AxisInfoMapä¸­å„ä¸ªè½´ä½ç½®ä¿¡æ¯ï¼Œè¯¥ä½ç½®ä¸ºæ‰§è¡Œæœºæ„å®é™…ä½ç½®æ•°æ®
+	*	@return	ä»¥jsonå½¢å¼ä¿å­˜è½´ã€è½´ä½ç½®æ•°æ®ï¼Œå¹¶è½¬åŒ–ä¸ºQByteArrayè¿”å›
+	*	@see	getAxisLimUpdate()
+	*	@note	è·å–è¿”å›å€¼åï¼Œå¯ä»¥é€šè¿‡QJsonDocumentã€QJsonObjectç­‰ç±»å‡½æ•°è¿›è¡Œè§£æã€‚
 	*/
 	QByteArray getAxisPosUpdate();
 
-	/*
-	<¸üĞÂÖáµÄÏŞÎ»ĞÅÏ¢>
-	²Î	Êı£ºÎŞ
-	·µ»ØÖµ£ºvoid
-	±¸×¢£º¸üĞÂ¸÷¸öÖáµÄÏŞÎ»ĞÅÏ¢£¬Í¨¹ısigAxisLimUpdateĞÅºÅ·¢ËÍ
+
+	/** è·å–å„ä¸ªè½´é™ä½ä¿¡æ¯
+	*	è·å–å†…éƒ¨å˜é‡AxisInfoMapä¸­å„ä¸ªè½´é™ä½ä¿¡æ¯
+	*	@return	ä»¥jsonå½¢å¼ä¿å­˜è½´ã€è½´é™ä½æ•°æ®ï¼Œå¹¶è½¬åŒ–ä¸ºQByteArrayè¿”å›
+	*	@see	getAxisPosUpdate()
+	*	@note	è·å–è¿”å›å€¼åï¼Œå¯ä»¥é€šè¿‡QJsonDocumentã€QJsonObjectç­‰ç±»å‡½æ•°è¿›è¡Œè§£æã€‚
 	*/
 	QByteArray getAxisLimUpdate();
 
-	/*
-	<»ñÈ¡io¶¨ÒåĞÅÏ¢>
-	²Î	Êı£ºÎŞ
-	·µ»ØÖµ£ºioºÍ¶Ë¿ÚµÄmap
+
+	/** è·å–è¾“å‡ºç«¯å£ä¿¡æ¯
+	*	è·å–å†…éƒ¨å˜é‡OutPutMapçš„å€¼
+	*	@return	QMap<QString, OutputInfo>
+	*	@see	getInputMap()
+	*	@note	è¿”å›å€¼ä¸ºmapç»“æ„ï¼ŒQStringä¸ºç«¯å£åç§°ï¼ŒOutputInfoä¸ºç»“æ„ä½“ï¼Œé‡Œé¢å­˜å‚¨äº†è¾“å‡ºç«¯å£ä¿¡æ¯
 	*/
 	QMap<QString, OutputInfo>	getOutputMap();
+
+
+	/** è·å–è¾“å…¥ç«¯å£ä¿¡æ¯
+	*	è·å–å†…éƒ¨å˜é‡InputMapçš„å€¼
+	*	@return	QMap<QString, int>
+	*	@see	getOutputMap()
+	*	@note	è¿”å›å€¼ä¸ºmapç»“æ„ï¼ŒQStringä¸ºç«¯å£åç§°ï¼Œintä¸ºç«¯å£å·
+	*/
 	QMap<QString, int>			getInputMap();
+
 
 /*******************************************************************
 
@@ -382,77 +467,122 @@ io operation...
 ********************************************************************/
 
 
-	/*
-	<output×¢²á>
-	²Î	Êı£ºdevName¶¨Òå¶Ë¿ÚÃû³Æ
-			devPort¶Ë¿ÚºÅ
-	·µ»ØÖµ£ºvoid
+	/** æ³¨å†Œè¾“å‡ºç«¯å£ä¿¡æ¯
+	*	å¾€å†…éƒ¨å˜é‡OutputMapä¸­æ·»åŠ è¾“å‡ºç«¯å£ä¿¡æ¯
+	*	@param	devName	ç«¯å£åç§°
+	*	@param	dev		ç»“æ„ä½“OutputInfoç±»å‹
+	*	@return	void
+	*	@see	registerOutputDev(QString devName, int PORT, int VALUE)
+	*	@note	å†…éƒ¨å˜é‡OutputMapä¸ºQMapå®¹å™¨ï¼Œå› æ­¤æ³¨å†Œç›¸åŒ ç«¯å£åç§° çš„ä¿¡æ¯æ—¶ï¼ŒåŸæœ‰çš„ä¿¡æ¯ä¼šè¢«æ–°çš„ä¿¡æ¯æ‰€è¦†ç›–ã€‚
 	*/
 	void registerOutputDev(QString devName, OutputInfo dev);
+
+
+	/** æ³¨å†Œè¾“å‡ºç«¯å£ä¿¡æ¯
+	*	é‡è½½ç‰ˆæœ¬ï¼Œå¾€å†…éƒ¨å˜é‡OutputMapä¸­æ·»åŠ è¾“å‡ºç«¯å£ä¿¡æ¯
+	*	@param	devName	ç«¯å£åç§°
+	*	@param	PORT	ç«¯å£å·
+	*	@param	VALUE	å€¼
+	*	@return	void
+	*	@see	registerOutputDev(QString devName, OutputInfo dev)
+	*	@note	å†…éƒ¨å˜é‡OutputMapä¸ºQMapå®¹å™¨ï¼Œå› æ­¤æ³¨å†Œç›¸åŒ ç«¯å£åç§° çš„ä¿¡æ¯æ—¶ï¼ŒåŸæœ‰çš„ä¿¡æ¯ä¼šè¢«æ–°çš„ä¿¡æ¯æ‰€è¦†ç›–ã€‚
+	*/
 	void registerOutputDev(QString devName, int PORT, int VALUE);
 
-	/*
-	<input×¢²á>
-	²Î	Êı£ºdevName¶¨Òå¶Ë¿ÚÃû³Æ
-			port¶Ë¿ÚºÅ
-	·µ»ØÖµ£ºvoid
+
+	/** åˆ é™¤æŸä¸ªè¾“å‡ºç«¯å£ä¿¡æ¯
+	*	ä»å†…éƒ¨å˜é‡OutPutMapä¸­åˆ é™¤é”®å€¼ä¸ºdevNameçš„ä¿¡æ¯
+	*	@param	devName	ç«¯å£åç§°
+	*	@return	åˆ é™¤æ‰çš„æ¡æ•°ï¼Œä¸€èˆ¬ä¸º0æˆ–1
+	*	@see	DeleteInputDev(QString devName)
+	*/
+	int DeleteOutputDev(QString devName);
+
+	/** æ³¨å†Œè¾“å…¥ç«¯å£ä¿¡æ¯
+	*	é‡è½½ç‰ˆæœ¬ï¼Œå¾€å†…éƒ¨å˜é‡InputMapä¸­æ·»åŠ è¾“å…¥ç«¯å£ä¿¡æ¯
+	*	@param	devName	ç«¯å£åç§°
+	*	@param	PORT	ç«¯å£å·
+	*	@return	void
+	*	@see	registerOutputDev(QString devName, OutputInfo dev)
+	*	@see	registerOutputDev(QString devName, int PORT, int VALUE)
+	*	@note	å†…éƒ¨å˜é‡InputMapä¸ºQMapå®¹å™¨ï¼Œå› æ­¤æ³¨å†Œç›¸åŒ ç«¯å£åç§° çš„ä¿¡æ¯æ—¶ï¼ŒåŸæœ‰çš„å€¼ä¿¡æ¯ä¼šè¢«æ–°çš„å€¼ä¿¡æ¯æ‰€è¦†ç›–ã€‚
 	*/
 	void registerInputDev(QString devName, int port);
 
 
-	/*
-	<Ğ´¶Ë¿Ú>
-	²Î	Êı£ºport_bit¶Ë¿ÚºÅ»òdevName¶Ë¿ÚÃû³Æ
-	·µ	»Ø£º³É¹¦Ôò0£¬²»³É¹¦Ôò-1
-	±¸	×¢£ºÁ½¸öÖØÔØ°æ±¾£¬²ÎÊıÎª devName×Ö·û´® »ò Ò»¸öport_bitÕûĞÍ
+	/** åˆ é™¤æŸä¸ªè¾“å…¥ç«¯å£ä¿¡æ¯
+	*	ä»å†…éƒ¨å˜é‡InputMapä¸­åˆ é™¤é”®å€¼ä¸ºdevNameçš„ä¿¡æ¯
+	*	@param	devName	ç«¯å£åç§°
+	*	@return	åˆ é™¤æ‰çš„æ¡æ•°ï¼Œä¸€èˆ¬ä¸º0æˆ–1
+	*	@see	DeleteOutputDev(QString devName)
+	*/
+	int DeleteInputDev(QString devName);
+
+
+	/** å†™è¾“å‡ºç«¯å£
+	*	å¾€ç«¯å£åç§°ä¸ºdevNameçš„è¾“å‡ºç«¯å£å†™æ•°æ®ï¼Œæ•°æ®ä¸ºOutputMapä¸­ä¿å­˜çš„ç›¸åº”çš„value
+	*	@param	devName	ç«¯å£åç§°
+	*	@return	æˆåŠŸä¸º0ï¼Œä¸æˆåŠŸä¸º-1
+	*	@see	portWrite(int port_bit)
+	*	@note	å½“åç§°devNameä¸å­˜åœ¨æ—¶ï¼Œä¸ä¼šæœ‰ä»»ä½•åŠ¨ä½œï¼Œè¿”å›å€¼ä¸º-1ã€‚
 	*/
 	int portWrite(QString devName);
+
+	/** å†™è¾“å‡ºç«¯å£
+	*	å¾€ç«¯å£å·ä¸ºport_bitçš„è¾“å‡ºç«¯å£å†™æ•°æ®ï¼Œæ•°æ®ä¸ºOutputMapä¸­ä¿å­˜çš„ç›¸åº”çš„value
+	*	@param	port_bit	ç«¯å£å·
+	*	@return	æˆåŠŸä¸º0ï¼Œä¸æˆåŠŸä¸º-1
+	*	@see	portWrite(QString devName)
+	*	@note	å½“åç§°port_bitä¸å­˜åœ¨æ—¶ï¼Œä¸ä¼šæœ‰ä»»ä½•åŠ¨ä½œï¼Œè¿”å›å€¼ä¸º-1ã€‚
+	*/
 	int portWrite(int port_bit);
 
 
-	/*
-	<¶Á¶Ë¿Ú>
-	²Î	Êı£ºport_bit
-	·µ»ØÖµ£º¶Ë¿ÚÖµ
-	±¸	×¢£ºÁ½¸öÖØÔØ°æ±¾£¬²ÎÊıÎª devName×Ö·û´® »ò Ò»¸öport_bitÕûĞÍ
-	*/
-	int portRead(int port_bit);
+/** è¯»è¾“å…¥ç«¯å£
+*	è¯»å–ç«¯å£åç§°ä¸ºdevNameçš„è¾“å…¥ç«¯å£çš„å€¼
+*	@param	devName	ç«¯å£åç§°
+*	@return	æˆåŠŸæ—¶è¿”å›è¯»å–åˆ°çš„å€¼ï¼Œä¸æˆåŠŸä¸º-1
+*	@see	portRead(int port_bit)
+*	@note	å½“åç§°devNameä¸å­˜åœ¨æ—¶ï¼Œä¸ä¼šæœ‰ä»»ä½•åŠ¨ä½œï¼Œè¿”å›å€¼ä¸º-1ã€‚
+*/
 	int portRead(QString devName);
 
-	/*
-	<ÖÃ·´¶Ë¿Ú>
-	²Î	Êı£ºdevName¶Ë¿ÚÃû³Æ»òport_bit¶Ë¿ÚºÅ
-	·µ»ØÖµ£º³É¹¦Ôò0£¬²»³É¹¦Ôò-1£»
-	±¸	×¢£ºÁ½¸öÖØÔØ°æ±¾£¬²ÎÊıÎª devName¶Ë¿ÚÃû³Æ »ò port_bit¶Ë¿ÚºÅ
-	
-	int ioDevTogg(QString devName);
-	int ioDevTogg(int  port_bit);
-	*/
 
-	/*
-	<Çå¿Õ×¢²áIO>
-	²Î	Êı£ºÎŞ
-	·µ»ØÖµ£ºvoid
+/** è¯»è¾“å…¥ç«¯å£
+*	é‡è½½ç‰ˆæœ¬ï¼Œè¯»å–ç«¯å£å·ä¸ºport_bitçš„è¾“å…¥ç«¯å£çš„å€¼
+*	@param	port_bit	ç«¯å£å·
+*	@return	æˆåŠŸæ—¶è¿”å›è¯»å–åˆ°çš„å€¼ï¼Œä¸æˆåŠŸä¸º-1
+*	@see	portRead(int port_bit)
+*	@note	å½“åç§°port_bitä¸å­˜åœ¨æ—¶ï¼Œä¸ä¼šæœ‰ä»»ä½•åŠ¨ä½œï¼Œè¿”å›å€¼ä¸º-1ã€‚
+*/
+	int portRead(int port_bit);
+
+	/** æ¸…ç©ºç«¯å£ä¿¡æ¯
+	*	æ¸…ç©ºå†…éƒ¨å˜é‡InputMapå’ŒOutPutMapçš„é”®å€¼
+	*	@return	è¿”å›å€¼ï¼švoid
 	*/
 	void ClearIoDev();
 
-	/*
-	<ÌŞ³ıÄ³IO>
-	²Î	Êı£ºioÃû³Æ
-	·µ»ØÖµ£ºvoid
-	*/
-	void DeleteOutputDev(QString devName);
-	void DeleteInputDev(QString devName);
-
 private:
+	/**æ¨¡æ¿ç»‘å®šçš„ç±»å‹ï¼Œæ¨¡æ¿ä¸­çš„å‡½æ•°å‡ä¼šè°ƒç”¨deviceçš„åŒåå‡½æ•°ï¼Œå…¶éœ€è¦åœ¨é¢å¤–çš„ç±»ä¸­å®ç°*/
 	T device;
 
+	/**è½´å‚æ•°ä¿¡æ¯ä¿å­˜å®¹å™¨ï¼ŒQStringä¸ºè½´åç§°ï¼ŒMotionInfoä¸ºè½´å‚æ•°ç»“æ„ä½“*/
 	QMap<QString, MotionInfo>	AxisInfoMap;
+
+	/**è¾“å‡ºç«¯å£ä¿¡æ¯ä¿å­˜å®¹å™¨ï¼ŒQStringä¸ºç«¯å£åç§°ï¼ŒOutputInfoä¸ºè¾“å‡ºç«¯å£å‚æ•°ç»“æ„ä½“*/
 	QMap<QString, OutputInfo>	OutPutMap;
+
+	/**è¾“å…¥ç«¯å£ä¿¡æ¯ä¿å­˜å®¹å™¨ï¼ŒQStringä¸ºç«¯å£åç§°ï¼Œintä¸ºè¾“å‡ºç«¯å£å·*/
 	QMap<QString, int>			InputMap;
 
+	/**ç‚¹åŠ¨é€Ÿåº¦å€¼*/
 	int		i_jogspeed;
+
+	/**è¿è¡Œé€Ÿåº¦å€¼*/
 	int		i_moveSpeed;
+
+	/**å›é›¶é€Ÿåº¦å€¼*/
 	int		i_zeroSpeed;
 
 };
@@ -529,7 +659,7 @@ QList<QByteArray> DRIVERS<T>::initFromAxisXML(QString path)
 							QDomElement _3NodeEle = _3Node.toElement(); 
 							QString tagName = _3NodeEle.tagName();
 							if (!tagName.isEmpty() && !_3NodeEle.text().isEmpty())json_Obj.insert(tagName, _3NodeEle.text());
-							else if (!tagName.isEmpty() && _3NodeEle.text().isEmpty()) return ErroPara;//ÓĞ²ÎÊıÃû³Æ£¬µ«Ã»ÓĞ²ÎÊıÖµ
+							else if (!tagName.isEmpty() && _3NodeEle.text().isEmpty()) return ErroPara;//æœ‰å‚æ•°åç§°ï¼Œä½†æ²¡æœ‰å‚æ•°å€¼
 						}
 						doc_Obj.setObject(json_Obj);
 						lPara.append(doc_Obj.toJson());
@@ -543,15 +673,6 @@ QList<QByteArray> DRIVERS<T>::initFromAxisXML(QString path)
 	}
 	else
 		return ErroPara;
-
-	QMapIterator<QString, MotionInfo> it(AxisInfoMap);
-	while (it.hasNext())
-	{
-		it.next();
-		qDebug() << "AxisinfoMap name:" << it.key() << " axis:" << it.value().Axis << " mpp:" << it.value().m_xMPP;
-	}
-
-
 	return lPara;
 }
 
@@ -1047,13 +1168,13 @@ void DRIVERS<T>::ClearIoDev()
 
 
 template<class T>
-void DRIVERS<T>::DeleteOutputDev(QString devName)
+int DRIVERS<T>::DeleteOutputDev(QString devName)
 {
-	OutputMap.remove(devName);
+	return OutputMap.remove(devName);
 }
 
 template<class T>
-void DRIVERS<T>::DeleteInputDev(QString devName)
+int DRIVERS<T>::DeleteInputDev(QString devName)
 {
-	InputMap.remove(devName);
+	return InputMap.remove(devName);
 }
